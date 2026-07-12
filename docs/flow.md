@@ -32,13 +32,13 @@ loop while waiting for data
         B -->> F: no (processing)
         F -->> U: shows skeleton(loading)
     else done
-        B -->> F: yes
-        F ->> B: give me result
         B ->> DB: takes data
-        B -->> F: data
+        DB -->> B: gives data
+        B -->> F: data {status: done, spec}
         Note over F: draw a graph
         F -->> U: dashboard
     else failed
+        B -->> F: {status: failed}
         F -->> U: ask user to try again
     end
 end
