@@ -13,3 +13,11 @@ Builder - собирает из него промпт для AI
 - Task<string> GetResponseAsync{string prompt}
 - чтобы он оставался тупым и заменяемым, в случай чего можно быть использовать любой другой, и главное чтобы он не знал о структуре глубже
   builder.Services.AddScoped<IAiProvider, ClaudeProvider>()Orchestrator(IAiProvider ai);
+
+public class ValidationResult {
+public DashboardSpec? Spec;
+public bool IsValid;
+public List<string> Errors;
+}
+
+ValidationResult Validate(string response, List<string> columns);
