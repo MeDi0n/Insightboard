@@ -1,3 +1,4 @@
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -7,8 +8,15 @@ namespace backend.Controllers;
 public class DashboardsController : ControllerBase
 {
     [HttpGet(Name = "GetDashboards")]
-    public string Get()
+    public DashboardSpec Get()
     {
-        return "hi";
+        return new DashboardSpec
+        {
+            Charts = new List<ChartSpec>
+            {
+                new ChartSpec{Type = "bar", Title = "result", X = "month", Y = "sales"},
+                new ChartSpec{Type = "line", Title = "awards", X = "month", Y = "awards"},
+            }
+        };
     }
 }
