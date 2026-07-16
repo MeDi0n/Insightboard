@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import type { DashboardSpec } from "./types/types";
+import { useDashboard } from "./hooks/useDashboard";
 
 function App() {
-  const [data, setData] = useState<DashboardSpec | null>(null);
-
-  useEffect(() => {
-    fetch("http://localhost:5029/dashboards")
-      .then((res) => res.json())
-      .then((spec) => setData(spec));
-  }, []);
-
-  if (data === null) return <p>Loading...</p>;
+  const { data, isLoading, isError } = useDashboard();
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+  if (!data) return null;
 
   return data.charts.map((chart, i) => (
     <div key={i}>
