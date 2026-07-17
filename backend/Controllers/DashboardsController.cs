@@ -7,7 +7,7 @@ namespace backend.Controllers;
 [Route("[controller]")]
 public class DashboardsController : ControllerBase
 {
-    [HttpGet(Name = "GetDashboards")]
+    [HttpGet]
     public DashboardSpec Get()
     {
         return new DashboardSpec
@@ -18,5 +18,12 @@ public class DashboardsController : ControllerBase
                 new ChartSpec{Type = "line", Title = "awards", X = "month", Y = "awards"},
             }
         };
+    }
+
+    [HttpPost]
+    public IActionResult Create(IFormFile file)
+    {
+        var id = Guid.NewGuid();
+        return Accepted(new {id});
     }
 }
