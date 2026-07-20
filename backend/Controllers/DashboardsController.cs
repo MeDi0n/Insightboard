@@ -17,19 +17,6 @@ public class DashboardsController : ControllerBase
     _store = store;
     }
 
-    [HttpGet]
-    public DashboardSpec Get()
-    {
-        return new DashboardSpec
-        {
-            Charts = new List<ChartSpec>
-            {
-                new ChartSpec{Type = "bar", Title = "result", X = "month", Y = "sales"},
-                new ChartSpec{Type = "line", Title = "awards", X = "month", Y = "awards"},
-            }
-        };
-    }
-
     [HttpGet("{id}")]
         public IActionResult GetById(Guid Id)
         {
@@ -49,6 +36,17 @@ public class DashboardsController : ControllerBase
     {
         var id = Guid.NewGuid();
         var job = new DashboardJob();
+
+        job.Status = "done";
+        job.Spec =  new DashboardSpec
+        {
+            Charts = new List<ChartSpec>
+            {
+                new ChartSpec{Type = "bar", Title = "result", X = "month", Y = "sales"},
+                new ChartSpec{Type = "line", Title = "awards", X = "month", Y = "awards"},
+            }
+        };
+
         _store.Save(id, job);
         return Accepted(new {id});
     }
