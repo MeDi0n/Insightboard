@@ -1,20 +1,13 @@
+import { useState } from "react";
 import "./App.css";
-import { useDashboard } from "./hooks/useDashboard";
+import DashboardView from "./components/DashboardView";
+import UploadForm from "./components/UploadForm";
 
 function App() {
-  const { data, isLoading, isError } = useDashboard();
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error</p>;
-  if (!data) return null;
+  const [jobId, setJobId] = useState<string | null>(null);
 
-  return data.charts.map((chart, i) => (
-    <div key={i}>
-      <h2>{chart.title}</h2>
-      <p>
-        {chart.type}: {chart.x} / {chart.y}{" "}
-      </p>
-    </div>
-  ));
+  if (!jobId) return <UploadForm onCreated={setJobId} />;
+  return <DashboardView id={jobId} />;
 }
 
 export default App;

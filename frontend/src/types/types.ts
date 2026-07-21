@@ -8,3 +8,10 @@ export interface ChartSpec {
 export interface DashboardSpec {
   charts: ChartSpec[];
 }
+
+export interface DashboardJob {
+  status: string;
+  spec: DashboardSpec | null;
+}
+
+export type DashboardViewProps = { id: string };
