@@ -1,3 +1,5 @@
+using backend.Ai;
+using backend.Generation;
 using backend.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,11 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
+builder.Services.AddSingleton<IAiProvider, FakeAiProvider>();
+
 builder.Services.AddSingleton<DashboardStore>();
+
+builder.Services.AddScoped<DashboardGenerator>();
 
 var app = builder.Build();
 

@@ -1,6 +1,8 @@
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using backend.Storage;
+using backend.Ai;
+using backend.Generation;
 
 namespace backend.Controllers;
 
@@ -11,10 +13,12 @@ namespace backend.Controllers;
 public class DashboardsController : ControllerBase
 {
     private readonly DashboardStore _store;
+    private readonly DashboardGenerator _generator;
 
-    public DashboardsController(DashboardStore store)
+    public DashboardsController(DashboardStore store, DashboardGenerator generator)
     {
     _store = store;
+    _generator = generator;
     }
 
     [HttpGet("{id}")]
@@ -32,20 +36,13 @@ public class DashboardsController : ControllerBase
         }
 
     [HttpPost]
-    public IActionResult Create(IFormFile file)
+    public async Task<IActionResult> Create(IFormFile file)
     {
         var id = Guid.NewGuid();
         var job = new DashboardJob();
 
         job.Status = "done";
-        job.Spec =  new DashboardSpec
-        {
-            Charts = new List<ChartSpec>
-            {
-                new ChartSpec{Type = "bar", Title = "result", X = "month", Y = "sales"},
-                new ChartSpec{Type = "line", Title = "awards", X = "month", Y = "awards"},
-            }
-        };
+        job.Spec =  await _generator.Generate(file);
 
         _store.Save(id, job);
         return Accepted(new {id});
