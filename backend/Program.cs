@@ -1,4 +1,5 @@
 using backend.Ai;
+using backend.Building;
 using backend.Generation;
 using backend.Parsing;
 using backend.Storage;
@@ -21,6 +22,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<IAiProvider, FakeAiProvider>();
+
+builder.Services.AddSingleton<PromptBuilder>();
 
 builder.Services.AddSingleton<CsvParser>();
 
