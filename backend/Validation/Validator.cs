@@ -7,10 +7,12 @@ public class Validator {
 public ValidationResult Validate(string aiResponse, List<string> columns)
 {
 
+
     DashboardSpec? response;
     try
         {
-           response =  JsonSerializer.Deserialize<DashboardSpec>(aiResponse);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+           response =  JsonSerializer.Deserialize<DashboardSpec>(aiResponse, options);
         }
     catch(JsonException)
         {
@@ -61,7 +63,7 @@ public ValidationResult Validate(string aiResponse, List<string> columns)
 
         var allowedTypes = new List<string>{"bar", "line"};
 
-        foreach (var chart in response.Charts)
+        foreach (var chart in response.Charts!)
         {
             if (!allowedTypes.Contains(chart.Type)) { errors.Add("unsupported chart type"); }
             if (!columns.Contains(chart.X))         { errors.Add("x column not found"); }

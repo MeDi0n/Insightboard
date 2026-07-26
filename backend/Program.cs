@@ -1,6 +1,7 @@
 using backend.Ai;
 using backend.Generation;
 using backend.Storage;
+using backend.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<IAiProvider, FakeAiProvider>();
+
+builder.Services.AddSingleton<Validator>();
 
 builder.Services.AddSingleton<DashboardStore>();
 

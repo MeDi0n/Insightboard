@@ -41,8 +41,17 @@ public class DashboardsController : ControllerBase
         var id = Guid.NewGuid();
         var job = new DashboardJob();
 
+        var spec = await _generator.Generate(file);
+        if(spec == null)
+        {
+        job.Status = "failed";
+        }
+        else
+        {
         job.Status = "done";
-        job.Spec =  await _generator.Generate(file);
+        job.Spec =  spec;
+        }
+
 
         _store.Save(id, job);
         return Accepted(new {id});
