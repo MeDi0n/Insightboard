@@ -1,5 +1,6 @@
 using backend.Ai;
 using backend.Generation;
+using backend.Parsing;
 using backend.Storage;
 using backend.Validation;
 
@@ -20,6 +21,8 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<IAiProvider, FakeAiProvider>();
+
+builder.Services.AddSingleton<CsvParser>();
 
 builder.Services.AddSingleton<Validator>();
 
