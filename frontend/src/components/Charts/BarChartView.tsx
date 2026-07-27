@@ -1,7 +1,5 @@
 import { Bar, BarChart, Tooltip, XAxis, YAxis } from "recharts";
-import type { ChartSpec } from "../types/types";
-
-type ChartProps = { chart: ChartSpec; data: Record<string, string>[] };
+import type { ChartProps } from "../../types/types";
 
 const Chart = ({ chart, data }: ChartProps) => {
   return (

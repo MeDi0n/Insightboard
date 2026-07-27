@@ -1,6 +1,6 @@
 import { useDashboard } from "../hooks/useDashboard";
 import type { DashboardViewProps } from "../types/types";
-import Chart from "./Chart";
+import Chart from "./Charts/Chart";
 
 const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);

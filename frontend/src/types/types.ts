@@ -16,3 +16,5 @@ export interface DashboardJob {
 }
 
 export type DashboardViewProps = { id: string };
+
+export type ChartProps = { chart: ChartSpec; data: Record<string, string>[] };
