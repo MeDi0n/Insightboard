@@ -7,6 +7,7 @@ export interface ChartSpec {
 
 export interface DashboardSpec {
   charts: ChartSpec[];
+  data: Record<string, string>[];
 }
 
 export interface DashboardJob {

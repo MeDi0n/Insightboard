@@ -24,7 +24,8 @@ public class DashboardGenerator
 
     public async Task<DashboardSpec?> Generate(IFormFile file)
     {
-        var columns = _parser.Parse(file);
+        var parsed = _parser.Parse(file);
+        var columns = parsed.Columns;
         var errors = new List<string>();
         for(int i = 0; i < 3; i++)
         {
@@ -33,6 +34,7 @@ public class DashboardGenerator
             var result = _validator.Validate(response, columns);
             if(result.IsValid)
             {
+                result.Spec!.Data = parsed.Rows;
                 return result.Spec;
             }
             errors = result.Errors ?? new List<string>();
