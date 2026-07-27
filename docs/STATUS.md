@@ -16,14 +16,14 @@ CSV → CsvParser (реальные колонки из заголовка)
     → done/failed → DashboardStore → фронт
 ```
 
-- **Backend** (`backend/`): контроллер тонкий, оркестратор `DashboardGenerator` держит петлю, все роли внедрены через DI (`Program.cs`). Оба козыря на месте.
-- **Frontend** (`frontend/`): загрузка CSV → 202+id → поллинг `GET /{id}` через TanStack Query → рендер. **Графики пока рендерятся ТЕКСТОМ**, не диаграммами.
+- **Backend** (`backend/`): контроллер тонкий, оркестратор `DashboardGenerator` держит петлю, все роли внедрены через DI (`Program.cs`). Оба козыря на месте. `CsvParser` читает и колонки, и строки данных (`CsvData`), данные едут во фронт через `DashboardSpec.Data`.
+- **Frontend** (`frontend/`): загрузка CSV → 202+id → поллинг `GET /{id}` через TanStack Query → **реальные графики** (Recharts). `Charts/Chart.tsx` — селектор по типу → `BarChartView`/`LineChartView`.
 - Ретрай проверен вживую (ломали фейк `bar`→`banana` → 3 неудачи → `failed`).
 
-## Следующий шаг — две большие цели (выбрать одну)
+## Следующий шаг — осталось по-крупному
 
 1. **Настоящий AI.** Заменить `FakeAiProvider` на реальный (OpenAI/Anthropic) за тем же `IAiProvider` — одна строка в `Program.cs`. Ключ хранить ТОЛЬКО в user-secrets (dev) / env (prod), НИКОГДА в коде/git. Тогда оживёт умный ретрай.
-2. **Фронт: библиотека графиков.** Заменить текстовый рендер в `DashboardView` на реальные диаграммы (Recharts/Chart.js).
+2. **Полировка фронта.** Графики жёстко `500x300` → адаптив через `ResponsiveContainer`; стили; оформить состояния `processing`/`failed`.
 
 ## Долги (не потерять)
 
