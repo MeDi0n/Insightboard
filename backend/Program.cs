@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
-builder.Services.AddSingleton<IAiProvider, FakeAiProvider>();
+builder.Services.AddSingleton<IAiProvider, AnthropicAiProvider>();
 
 builder.Services.AddSingleton<PromptBuilder>();
 
