@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DashboardView from "./components/DashboardView";
+import Header from "./components/Header/Header";
 import UploadForm from "./components/UploadForm";
 import useTheme from "./hooks/useTheme";
 
@@ -9,11 +10,7 @@ function App() {
 
   return (
     <>
-      <header>
-        <button onClick={() => setColorTheme("dark")}>dark</button>
-        <button onClick={() => setColorTheme("light")}>light</button>
-        {colorTheme}
-      </header>
+      <Header colorTheme={colorTheme} setColorTheme={setColorTheme} />
 
       {!jobId ? (
         <UploadForm onCreated={setJobId} />

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-type Сolors = "light" | "dark";
+export type Colors = "light" | "dark";
 
 const useTheme = () => {
-  const [colorTheme, setColorTheme] = useState<Сolors>(() => {
+  const [colorTheme, setColorTheme] = useState<Colors>(() => {
     const savedColor = localStorage.getItem("colorTheme");
 
     if (savedColor === "dark") {
