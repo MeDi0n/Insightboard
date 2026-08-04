@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Storage;
 using backend.Ai;
 using backend.Generation;
+using backend.Parsing;
 
 namespace backend.Controllers;
 
@@ -14,9 +15,13 @@ public class DashboardsController : ControllerBase
 {
     private readonly DashboardStore _store;
     private readonly DashboardGenerator _generator;
+    private readonly CsvParser _parser;
 
-    public DashboardsController(DashboardStore store, DashboardGenerator generator)
+
+
+    public DashboardsController(DashboardStore store, DashboardGenerator generator, CsvParser parser)
     {
+    _parser = parser;
     _store = store;
     _generator = generator;
     }
@@ -36,12 +41,16 @@ public class DashboardsController : ControllerBase
         }
 
     [HttpPost]
-    public async Task<IActionResult> Create(IFormFile file)
+    public IActionResult Create(IFormFile file)
     {
         var id = Guid.NewGuid();
-        var job = new DashboardJob();
+        var job = new DashboardJob{Status = "processing"};
+        var parsed = _parser.Parse(file);
+        _store.Save(id, job);
 
-        var spec = await _generator.Generate(file);
+        _ = Task.Run(async () =>
+        {
+        var spec = await _generator.Generate(parsed);
         if(spec == null)
         {
         job.Status = "failed";
@@ -51,9 +60,8 @@ public class DashboardsController : ControllerBase
         job.Status = "done";
         job.Spec =  spec;
         }
+        });
 
-
-        _store.Save(id, job);
         return Accepted(new {id});
     }
 }

@@ -1,6 +1,5 @@
 using backend.Models;
 using backend.Ai;
-using System.Text.Json;
 using backend.Validation;
 using backend.Parsing;
 using backend.Building;
@@ -11,20 +10,17 @@ public class DashboardGenerator
 {
     private readonly IAiProvider _ai;
     private readonly Validator _validator;
-    private readonly CsvParser _parser;
     private readonly PromptBuilder _builder;
 
-    public DashboardGenerator(IAiProvider ai, Validator validator, CsvParser parser, PromptBuilder builder)
+    public DashboardGenerator(IAiProvider ai, Validator validator, PromptBuilder builder)
     {
         _ai = ai;
         _validator = validator;
-        _parser = parser;
         _builder = builder;
     }
 
-    public async Task<DashboardSpec?> Generate(IFormFile file)
+    public async Task<DashboardSpec?> Generate(CsvData parsed)
     {
-        var parsed = _parser.Parse(file);
         var columns = parsed.Columns;
         var errors = new List<string>();
         for(int i = 0; i < 3; i++)

@@ -31,7 +31,7 @@ builder.Services.AddSingleton<Validator>();
 
 builder.Services.AddSingleton<DashboardStore>();
 
-builder.Services.AddScoped<DashboardGenerator>();
+builder.Services.AddSingleton<DashboardGenerator>();
 
 var app = builder.Build();
 
