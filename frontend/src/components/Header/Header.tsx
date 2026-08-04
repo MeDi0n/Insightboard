@@ -15,13 +15,15 @@ const Header = ({ colorTheme, setColorTheme }: Props) => {
 
   return (
     <header className="header">
-      <div className="logo">
-        <ChartNoAxesColumnIncreasing />
-        Insightboard
+      <div className="page-width">
+        <div className="logo">
+          <ChartNoAxesColumnIncreasing />
+          Insightboard
+        </div>
+        <button className="switch-button" onClick={toggleTheme}>
+          {colorTheme === "light" ? <Moon /> : <Sun />}
+        </button>
       </div>
-      <button className="switch-button" onClick={toggleTheme}>
-        {colorTheme === "light" ? <Moon /> : <Sun />}
-      </button>
     </header>
   );
 };

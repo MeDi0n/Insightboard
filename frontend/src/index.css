@@ -99,3 +99,9 @@ body {
   background: var(--color-bg-elevated);
   min-height: 100vh;
 }
+
+.page-width {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}

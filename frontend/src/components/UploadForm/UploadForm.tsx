@@ -31,25 +31,32 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
   }
 
   return (
-    <div className="upload-card">
-      <h1 className="title">Build a dashboard from CSV</h1>
-      <p className="subtitle">
-        Upload a table AI picks the charts and builds the dashboard
-      </p>
-      <form onSubmit={handleSubmit}>
-        <label className="dropzone">
-          <Upload className="upload-icon" />
-          <span>Drag your CSV here</span>
-          <span className="or">or</span>
-          <span className="choose">Choose your file</span>
-          <input type="file" accept=".csv" onChange={handleFileChange} hidden />
-          {file && <span className="filename">{file.name}</span>}
-        </label>
+    <div className="page-width">
+      <div className="upload-card">
+        <h1 className="title">Build a dashboard from CSV</h1>
+        <p className="subtitle">
+          Upload a table AI picks the charts and builds the dashboard
+        </p>
+        <form onSubmit={handleSubmit}>
+          <label className="dropzone">
+            <Upload className="upload-icon" />
+            <span>Drag your CSV here</span>
+            <span className="or">or</span>
+            <span className="choose">Choose your file</span>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleFileChange}
+              hidden
+            />
+            {file && <span className="filename">{file.name}</span>}
+          </label>
 
-        <button type="submit" className="submit">
-          Build dashboard
-        </button>
-      </form>
+          <button type="submit" className="submit">
+            Build dashboard
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

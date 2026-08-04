@@ -17,13 +17,15 @@ const DashboardView = ({ id }: DashboardViewProps) => {
   if (!spec) return null;
 
   return (
-    <div className="dashboard-grid">
-      {spec?.charts?.map((chart, i) => (
-        <div className="chart-card" key={i}>
-          <h2 className="chart-title">{chart.title}</h2>
-          <Chart chart={chart} data={spec.data} />
-        </div>
-      ))}
+    <div className="page-width">
+      <div className="dashboard-grid">
+        {spec?.charts?.map((chart, i) => (
+          <div className="chart-card" key={i}>
+            <h2 className="chart-title">{chart.title}</h2>
+            <Chart chart={chart} data={spec.data} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
