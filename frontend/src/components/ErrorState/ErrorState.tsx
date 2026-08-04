@@ -2,22 +2,22 @@ import { TriangleAlert } from "lucide-react";
 import "./ErrorState.css";
 
 type Props = {
+  title: string;
+  text: string;
+  actionLabel: string;
   onRetry: () => void;
 };
 
-const ErrorState = ({ onRetry }: Props) => {
+const ErrorState = ({ title, text, actionLabel, onRetry }: Props) => {
   return (
     <div className="error-state">
       <div className="error-icon">
         <TriangleAlert />
       </div>
-      <h2 className="error-title">Could not build the dashboard</h2>
-      <p className="error-text">
-        AI failed to produce a valid result after 3 attempts. Check the file
-        format and try again.
-      </p>
+      <h2 className="error-title">{title}</h2>
+      <p className="error-text">{text}</p>
       <button className="error-button" onClick={onRetry}>
-        Upload another file
+        {actionLabel}
       </button>
     </div>
   );
