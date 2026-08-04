@@ -40,7 +40,10 @@ const DashboardView = ({ id, onReset }: DashboardViewProps) => {
       <div className="dashboard-grid">
         {spec?.charts?.map((chart, i) => (
           <div className="chart-card" key={i}>
-            <h2 className="chart-title">{chart.title}</h2>
+            <div className="chart-card-header">
+              <h2 className="chart-title">{chart.title}</h2>
+              <span className="chart-badge">{chart.type}</span>
+            </div>
             <Chart chart={chart} data={spec.data} />
           </div>
         ))}
