@@ -7,6 +7,9 @@ import useTheme from "./hooks/useTheme";
 function App() {
   const [jobId, setJobId] = useState<string | null>(null);
   const [colorTheme, setColorTheme] = useTheme();
+  const reset = () => {
+    setJobId(null);
+  };
 
   return (
     <>
@@ -15,7 +18,7 @@ function App() {
         {!jobId ? (
           <UploadForm onCreated={setJobId} />
         ) : (
-          <DashboardView id={jobId} />
+          <DashboardView id={jobId} onReset={reset} />
         )}
       </div>
     </>

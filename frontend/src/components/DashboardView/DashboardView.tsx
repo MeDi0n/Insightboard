@@ -1,9 +1,10 @@
 import { useDashboard } from "../../hooks/useDashboard";
 import type { DashboardViewProps } from "../../types/types";
 import Chart from "../Charts/Chart";
+import ErrorState from "../ErrorState/ErrorState";
 import "./DashboardView.css";
 
-const DashboardView = ({ id }: DashboardViewProps) => {
+const DashboardView = ({ id, onReset }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
 
   if (isLoading) return <p>Loading...</p>;
@@ -11,7 +12,7 @@ const DashboardView = ({ id }: DashboardViewProps) => {
   if (!data) return null;
 
   if (data.status === "processing") return <p>генерируем...</p>;
-  if (data.status === "failed") return <p>попробуйте еще раз</p>;
+  if (data.status === "failed") return <ErrorState onRetry={onReset} />;
 
   const spec = data.spec;
   if (!spec) return null;
