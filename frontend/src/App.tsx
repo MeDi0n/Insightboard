@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DashboardView from "./components/DashboardView";
+import DashboardView from "./components/DashboardView/DashboardView";
 import Header from "./components/Header/Header";
 import UploadForm from "./components/UploadForm/UploadForm";
 import useTheme from "./hooks/useTheme";

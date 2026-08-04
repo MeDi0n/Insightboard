@@ -1,6 +1,7 @@
-import { useDashboard } from "../hooks/useDashboard";
-import type { DashboardViewProps } from "../types/types";
-import Chart from "./Charts/Chart";
+import { useDashboard } from "../../hooks/useDashboard";
+import type { DashboardViewProps } from "../../types/types";
+import Chart from "../Charts/Chart";
+import "./DashboardView.css";
 
 const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
@@ -15,12 +16,16 @@ const DashboardView = ({ id }: DashboardViewProps) => {
   const spec = data.spec;
   if (!spec) return null;
 
-  return spec?.charts.map((chart, i) => (
-    <div key={i}>
-      <h2>{chart.title}</h2>
-      <Chart chart={chart} data={spec.data} />
+  return (
+    <div className="dashboard-grid">
+      {spec?.charts?.map((chart, i) => (
+        <div className="chart-card" key={i}>
+          <h2 className="chart-title">{chart.title}</h2>
+          <Chart chart={chart} data={spec.data} />
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 export default DashboardView;
