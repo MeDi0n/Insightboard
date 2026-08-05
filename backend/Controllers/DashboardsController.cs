@@ -16,6 +16,7 @@ public class DashboardsController : ControllerBase
     private readonly DashboardStore _store;
     private readonly DashboardGenerator _generator;
     private readonly CsvParser _parser;
+    private static readonly string[] AllowedExtensions = [".csv", ".xlsx", ".pdf"];
 
 
 
@@ -43,6 +44,15 @@ public class DashboardsController : ControllerBase
     [HttpPost]
     public IActionResult Create(IFormFile file)
     {
+        if(file == null || file.Length == 0)
+        {
+            return BadRequest(new { error = "File is empty or was not provided."});
+        }
+        var ext = Path.GetExtension(file.FileName);
+        if(!AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase))
+        {
+            return BadRequest(new {error = "Unsupported file type. Upload .csv, .xlsx or .pdf."});
+        }
         var id = Guid.NewGuid();
         var job = new DashboardJob{Status = "processing"};
         var parsed = _parser.Parse(file);
