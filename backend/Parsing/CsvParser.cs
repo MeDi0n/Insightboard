@@ -1,16 +1,20 @@
 namespace backend.Parsing;
 
-public class CsvParser
+public class CsvParser : IFileParser
 {
+    public bool AllowedExtension(string extension)
+    {
+        return string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase);
+    }
     public CsvData Parse(IFormFile file)
     {
         using var reader = new StreamReader(file.OpenReadStream());
         var headerLine = reader.ReadLine();
-        if(headerLine == null)
+        if(string.IsNullOrWhiteSpace(headerLine))
         {
-            throw new InvalidDataException("csv file is empty");
+            throw new InvalidDataException("file has no header row");
         }
-        var columns = headerLine.Split(',').ToList();
+        var columns = headerLine.Split(",").ToList();
         var rows = new List<Dictionary<string, string>>();
         string? line;
         while ((line = reader.ReadLine()) != null)

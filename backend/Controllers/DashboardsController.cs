@@ -15,14 +15,12 @@ public class DashboardsController : ControllerBase
 {
     private readonly DashboardStore _store;
     private readonly DashboardGenerator _generator;
-    private readonly CsvParser _parser;
-    private static readonly string[] AllowedExtensions = [".csv", ".xlsx", ".pdf"];
+    private readonly IEnumerable<IFileParser> _parsers;
 
 
-
-    public DashboardsController(DashboardStore store, DashboardGenerator generator, CsvParser parser)
+    public DashboardsController(DashboardStore store, DashboardGenerator generator, IEnumerable<IFileParser> parser)
     {
-    _parser = parser;
+    _parsers = parser;
     _store = store;
     _generator = generator;
     }
@@ -49,13 +47,22 @@ public class DashboardsController : ControllerBase
             return BadRequest(new { error = "File is empty or was not provided."});
         }
         var ext = Path.GetExtension(file.FileName);
-        if(!AllowedExtensions.Contains(ext, StringComparer.OrdinalIgnoreCase))
+        var parser = _parsers.FirstOrDefault(p => p.AllowedExtension(ext));
+        if(parser == null)
         {
             return BadRequest(new {error = "Unsupported file type. Upload .csv, .xlsx or .pdf."});
         }
         var id = Guid.NewGuid();
         var job = new DashboardJob{Status = "processing"};
-        var parsed = _parser.Parse(file);
+        CsvData parsed;
+        try
+        {
+        parsed = parser.Parse(file);
+        }
+        catch
+        {
+            return BadRequest(new {error = "Сannot read that file"});
+        }
         _store.Save(id, job);
 
         _ = Task.Run(async () =>

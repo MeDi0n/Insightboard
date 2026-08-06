@@ -25,7 +25,7 @@ builder.Services.AddSingleton<IAiProvider, AnthropicAiProvider>();
 
 builder.Services.AddSingleton<PromptBuilder>();
 
-builder.Services.AddSingleton<CsvParser>();
+builder.Services.AddSingleton<IFileParser, CsvParser>();
 
 builder.Services.AddSingleton<Validator>();
 
