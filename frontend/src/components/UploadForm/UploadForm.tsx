@@ -8,6 +8,7 @@ type UploadFormProps = {
 
 const UploadForm = ({ onCreated }: UploadFormProps) => {
   const [file, setFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFile(e.target.files?.[0] ?? null);
@@ -15,6 +16,7 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
 
     if (!file) return;
 
@@ -25,7 +27,13 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
       method: "POST",
       body: formData,
     });
+
     const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error);
+      return;
+    }
 
     onCreated(data.id);
   }
@@ -51,7 +59,7 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
             />
             {file && <span className="filename">{file.name}</span>}
           </label>
-
+          {error && <span className="upload-error">{error}</span>}
           <button type="submit" className="submit">
             Build dashboard
           </button>
