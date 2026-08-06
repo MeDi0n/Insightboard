@@ -6,7 +6,7 @@ public class CsvParser : IFileParser
     {
         return string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase);
     }
-    public CsvData Parse(IFormFile file)
+    public TableData Parse(IFormFile file)
     {
         using var reader = new StreamReader(file.OpenReadStream());
         var headerLine = reader.ReadLine();
@@ -28,6 +28,6 @@ public class CsvParser : IFileParser
             rows.Add(dictionary);
         }
 
-        return new CsvData {Columns = columns, Rows = rows};
+        return new TableData {Columns = columns, Rows = rows};
     }
 }

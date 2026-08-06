@@ -54,7 +54,7 @@ public class DashboardsController : ControllerBase
         }
         var id = Guid.NewGuid();
         var job = new DashboardJob{Status = "processing"};
-        CsvData parsed;
+        TableData parsed;
         try
         {
         parsed = parser.Parse(file);

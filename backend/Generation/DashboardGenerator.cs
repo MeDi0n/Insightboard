@@ -19,7 +19,7 @@ public class DashboardGenerator
         _builder = builder;
     }
 
-    public async Task<DashboardSpec?> Generate(CsvData parsed)
+    public async Task<DashboardSpec?> Generate(TableData parsed)
     {
         var columns = parsed.Columns;
         var errors = new List<string>();
