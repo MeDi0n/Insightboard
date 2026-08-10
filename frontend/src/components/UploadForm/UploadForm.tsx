@@ -41,19 +41,20 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
   return (
     <div className="page-width">
       <div className="upload-card">
-        <h1 className="title">Build a dashboard from CSV</h1>
+        <h1 className="title">Build a dashboard from your data</h1>
         <p className="subtitle">
-          Upload a table AI picks the charts and builds the dashboard
+          Upload a CSV or Excel file — AI picks the charts and builds the
+          dashboard
         </p>
         <form onSubmit={handleSubmit}>
           <label className="dropzone">
             <Upload className="upload-icon" />
-            <span>Drag your CSV here</span>
+            <span>Drag your file here</span>
             <span className="or">or</span>
             <span className="choose">Choose your file</span>
             <input
               type="file"
-              accept=".csv"
+              accept=".csv,.xlsx"
               onChange={handleFileChange}
               hidden
             />
