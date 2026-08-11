@@ -8,6 +8,7 @@ import {
   YAxis,
 } from "recharts";
 import type { ChartProps } from "../../types/types";
+import { withGaps } from "./chartData";
 import { useChartTheme } from "./chartTheme";
 
 const Chart = ({ chart, data }: ChartProps) => {
@@ -15,7 +16,10 @@ const Chart = ({ chart, data }: ChartProps) => {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
+      <LineChart
+        data={withGaps(data, chart.y)}
+        margin={{ top: 8, right: 8, bottom: 0, left: -16 }}
+      >
         <CartesianGrid
           stroke={theme.grid}
           strokeDasharray="3 3"
