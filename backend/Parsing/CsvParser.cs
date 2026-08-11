@@ -1,3 +1,5 @@
+using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
+
 namespace backend.Parsing;
 
 public class CsvParser : IFileParser
@@ -20,10 +22,19 @@ public class CsvParser : IFileParser
         while ((line = reader.ReadLine()) != null)
         {
             var values = line.Split(",");
+
             var dictionary = new Dictionary<string, string>();
             for(int i = 0; i < columns.Count; i++)
             {
-                dictionary[columns[i]] = values[i];
+                if(i < values.Length)
+                {
+                    dictionary[columns[i]] = values[i];
+                }
+                else
+                {
+                    dictionary[columns[i]] = "";
+                }
+
             }
             rows.Add(dictionary);
         }
