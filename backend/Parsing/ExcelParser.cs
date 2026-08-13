@@ -47,7 +47,6 @@ public class ExcelParser : IFileParser
 
         return new TableData
         {
-
             Columns = columns,
             Rows = tableRows
         };

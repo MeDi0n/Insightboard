@@ -29,6 +29,8 @@ builder.Services.AddSingleton<IFileParser, CsvParser>();
 
 builder.Services.AddSingleton<IFileParser, ExcelParser>();
 
+builder.Services.AddSingleton<IFileParser, PdfParser>();
+
 builder.Services.AddSingleton<Validator>();
 
 builder.Services.AddSingleton<DashboardStore>();

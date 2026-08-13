@@ -55,7 +55,7 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
             <span className="choose">Choose your file</span>
             <input
               type="file"
-              accept=".csv,.xlsx"
+              accept=".csv,.xlsx,.pdf"
               onChange={handleFileChange}
               hidden
             />
