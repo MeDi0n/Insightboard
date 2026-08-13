@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "../config";
 import type { DashboardJob } from "../types/types";
 
 export function useDashboard(id: string) {
   return useQuery<DashboardJob>({
     queryKey: ["dashboard", id],
     queryFn: () =>
-      fetch(`http://localhost:5029/dashboards/${id}`).then((res) => res.json()),
+      fetch(`${API_URL}/dashboards/${id}`).then((res) => res.json()),
     refetchInterval: (query) => {
       const status = query.state.data?.status;
 

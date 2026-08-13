@@ -1,5 +1,6 @@
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
+import { API_URL } from "../../config";
 import "./UploadForm.css";
 
 type UploadFormProps = {
@@ -23,7 +24,7 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("http://localhost:5029/dashboards", {
+    const res = await fetch(`${API_URL}/dashboards`, {
       method: "POST",
       body: formData,
     });
