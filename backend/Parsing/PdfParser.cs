@@ -1,6 +1,5 @@
 namespace backend.Parsing;
 
-using DocumentFormat.OpenXml.Office.PowerPoint.Y2021.M06.Main;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
 
