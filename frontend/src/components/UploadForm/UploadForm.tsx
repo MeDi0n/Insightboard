@@ -1,6 +1,7 @@
+import axios from "axios";
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
-import { API_URL } from "../../config";
+import api from "../../api/httpClient";
 import "./UploadForm.css";
 
 type UploadFormProps = {
@@ -24,19 +25,17 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch(`${API_URL}/dashboards`, {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const res = await api.post<{ id: string }>("/dashboards", formData);
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error);
-      return;
+      onCreated(res.data.id);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error ?? "Upload failed");
+      } else {
+        setError("Server is not available right now");
+      }
     }
-
-    onCreated(data.id);
   }
 
   return (
