@@ -15,6 +15,6 @@ export interface DashboardJob {
   spec: DashboardSpec | null;
 }
 
-export type DashboardViewProps = { id: string; onReset: () => void };
+export type DashboardViewProps = { id: string };
 
 export type ChartProps = { chart: ChartSpec; data: Record<string, string>[] };

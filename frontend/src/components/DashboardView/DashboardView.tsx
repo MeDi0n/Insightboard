@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../../hooks/useDashboard";
 import type { DashboardViewProps } from "../../types/types";
 import Chart from "../Charts/Chart";
@@ -5,8 +6,9 @@ import ErrorState from "../ErrorState/ErrorState";
 import GeneratingState from "../GeneratingState/GeneratingState";
 import "./DashboardView.css";
 
-const DashboardView = ({ id, onReset }: DashboardViewProps) => {
+const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
+  const navigate = useNavigate();
 
   if (isLoading || data?.status === "processing") return <GeneratingState />;
 
@@ -16,7 +18,7 @@ const DashboardView = ({ id, onReset }: DashboardViewProps) => {
         actionLabel="Start over"
         title="Could not reach the server"
         text="The request failed. Check your connection and try again."
-        onRetry={onReset}
+        onRetry={() => navigate("/")}
       />
     );
 
@@ -28,7 +30,7 @@ const DashboardView = ({ id, onReset }: DashboardViewProps) => {
         actionLabel="Upload another file"
         title="Could not build the dashboard"
         text="AI failed to produce a valid result after 3 attempts. Check the file format and try again."
-        onRetry={onReset}
+        onRetry={() => navigate("/")}
       />
     );
 
