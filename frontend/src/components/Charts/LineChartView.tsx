@@ -7,7 +7,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import type { ChartProps } from "../../types/types";
+import type { ChartProps } from "./Chart";
 import { withGaps } from "./chartData";
 import { useChartTheme } from "./chartTheme";
 

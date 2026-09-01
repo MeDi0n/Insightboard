@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../../hooks/useDashboard";
-import type { DashboardViewProps } from "../../types/types";
 import Chart from "../Charts/Chart";
 import ErrorState from "../ErrorState/ErrorState";
 import GeneratingState from "../GeneratingState/GeneratingState";
 import "./DashboardView.css";
+
+export type DashboardViewProps = { id: string };
 
 const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
