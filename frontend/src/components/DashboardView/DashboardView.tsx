@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../../hooks/useDashboard";
+import { DashboardStatus } from "../../models/DashboardModel";
 import Chart from "../Charts/Chart";
 import ErrorState from "../ErrorState/ErrorState";
 import GeneratingState from "../GeneratingState/GeneratingState";
@@ -11,7 +12,8 @@ const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
   const navigate = useNavigate();
 
-  if (isLoading || data?.status === "processing") return <GeneratingState />;
+  if (isLoading || data?.status === DashboardStatus.Processing)
+    return <GeneratingState />;
 
   if (isError)
     return (
@@ -25,7 +27,7 @@ const DashboardView = ({ id }: DashboardViewProps) => {
 
   if (!data) return null;
 
-  if (data.status === "failed")
+  if (data.status === DashboardStatus.Failed)
     return (
       <ErrorState
         actionLabel="Upload another file"

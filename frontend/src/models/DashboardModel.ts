@@ -6,8 +6,14 @@ export const DashboardSpecSchema = z.object({
   data: z.array(z.record(z.string(), z.string())),
 });
 
+export const DashboardStatus = {
+  Processing: "processing",
+  Done: "done",
+  Failed: "failed",
+} as const;
+
 export const DashboardSchema = z.object({
-  status: z.string(),
+  status: z.enum(DashboardStatus),
   spec: DashboardSpecSchema.nullable(),
 });
 

@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../api/httpClient";
-import { DashboardSchema, type Dashboard } from "../models/DashboardModel";
+import {
+  DashboardSchema,
+  DashboardStatus,
+  type Dashboard,
+} from "../models/DashboardModel";
 
 export function useDashboard(id: string) {
   return useQuery<Dashboard>({
@@ -12,7 +16,7 @@ export function useDashboard(id: string) {
     refetchInterval: (query) => {
       const status = query.state.data?.status;
 
-      return status === "processing" ? 1000 : false;
+      return status === DashboardStatus.Processing ? 1000 : false;
     },
   });
 }
