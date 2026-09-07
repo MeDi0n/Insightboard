@@ -1,9 +1,9 @@
-using backend.Ai;
-using backend.Building;
-using backend.Generation;
-using backend.Parsing;
-using backend.Storage;
-using backend.Validation;
+using Insightboard.Api.Ai;
+using Insightboard.Api.Building;
+using Insightboard.Api.Generation;
+using Insightboard.Api.Parsing;
+using Insightboard.Api.Storage;
+using Insightboard.Api.Validation;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 

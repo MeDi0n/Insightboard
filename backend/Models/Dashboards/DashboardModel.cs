@@ -1,8 +1,6 @@
-using backend.Models;
+namespace Insightboard.Api.Models.Dashboards;
 
-namespace backend.Storage;
-
-public class DashboardJob
+public class DashboardModel
 {
     public DashboardStatus Status { get; set; } = DashboardStatus.Processing;
     public DashboardSpec? Spec { get; set; } = null;

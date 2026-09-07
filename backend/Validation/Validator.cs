@@ -1,6 +1,7 @@
 using System.Text.Json;
-using backend.Models;
-namespace backend.Validation;
+using Insightboard.Api.Models.Charts;
+using Insightboard.Api.Models.Dashboards;
+namespace Insightboard.Api.Validation;
 
 public class Validator {
 

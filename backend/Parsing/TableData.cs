@@ -1,4 +1,4 @@
-namespace backend.Parsing;
+namespace Insightboard.Api.Parsing;
 
 public class TableData
 {

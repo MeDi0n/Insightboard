@@ -1,11 +1,10 @@
-using backend.Models;
 using Microsoft.AspNetCore.Mvc;
-using backend.Storage;
-using backend.Ai;
-using backend.Generation;
-using backend.Parsing;
+using Insightboard.Api.Storage;
+using Insightboard.Api.Generation;
+using Insightboard.Api.Parsing;
+using Insightboard.Api.Models.Dashboards;
 
-namespace backend.Controllers;
+namespace Insightboard.Api.Controllers;
 
 
 
@@ -53,7 +52,7 @@ public class DashboardsController : ControllerBase
             return BadRequest(new {error = "Unsupported file type. Upload .csv, .xlsx or .pdf."});
         }
         var id = Guid.NewGuid();
-        var job = new DashboardJob{Status = DashboardStatus.Processing};
+        var job = new DashboardModel{Status = DashboardStatus.Processing};
         TableData parsed;
         try
         {

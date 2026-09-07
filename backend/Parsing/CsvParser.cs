@@ -1,6 +1,6 @@
 using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
 
-namespace backend.Parsing;
+namespace Insightboard.Api.Parsing;
 
 public class CsvParser : IFileParser
 {

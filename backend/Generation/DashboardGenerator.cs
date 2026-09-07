@@ -1,10 +1,10 @@
-using backend.Models;
-using backend.Ai;
-using backend.Validation;
-using backend.Parsing;
-using backend.Building;
+using Insightboard.Api.Ai;
+using Insightboard.Api.Validation;
+using Insightboard.Api.Parsing;
+using Insightboard.Api.Building;
+using Insightboard.Api.Models.Dashboards;
 
-namespace backend.Generation;
+namespace Insightboard.Api.Generation;
 
 public class DashboardGenerator
 {

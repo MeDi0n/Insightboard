@@ -1,4 +1,4 @@
-namespace backend.Building;
+namespace Insightboard.Api.Building;
 
 public class PromptBuilder
 {

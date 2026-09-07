@@ -1,4 +1,4 @@
-namespace backend.Parsing;
+namespace Insightboard.Api.Parsing;
 
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;

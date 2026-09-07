@@ -1,4 +1,4 @@
-namespace backend.Parsing;
+namespace Insightboard.Api.Parsing;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Drawing.Charts;
 

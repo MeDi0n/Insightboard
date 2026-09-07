@@ -1,4 +1,4 @@
-namespace backend.Ai;
+namespace Insightboard.Api.Ai;
 
 public class FakeAiProvider : IAiProvider
 {

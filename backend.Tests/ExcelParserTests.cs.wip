@@ -1,0 +1,41 @@
+using ClosedXML.Excel;
+using Insightboard.Api.Parsing;
+
+namespace ExcelParserTests;
+
+public class ExcelParserTests {
+
+    private static IFormFile MakeFile(string column, string name)
+    {
+        var stream = new MemoryStream();
+        var workbook = new XLWorkbook();
+        var sheet = workbook.AddWorksheet("Sheet1");
+        sheet.Cell(1, 1).Value = 6;
+        workbook.SaveAs(stream);
+        new FormFile(stream, 0, stream.Length, "file", "test.xlsx");
+    }
+
+
+    [Fact]
+    public void Parse_ValidCsv_ReturnsColumnsAndRows()
+    {
+        var parser = new CsvParser();
+
+        // Arrange
+        var csv = """
+        month,sales
+        Jan,100
+        Feb,150
+        """;
+
+        // Act
+        var csvFile = MakeFile(csv, "test.csv");
+
+        var result = parser.Parse(csvFile);
+
+        // Assert
+        Assert.Equal(2, result.Columns.Count);
+        Assert.Equal(2, result.Rows.Count);
+        Assert.Equal("Jan", result.Rows[0]["month"]);
+    }
+}

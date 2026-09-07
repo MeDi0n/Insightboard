@@ -1,4 +1,6 @@
-namespace backend.Models;
+using Insightboard.Api.Models.Charts;
+
+namespace Insightboard.Api.Models.Dashboards;
 
 public class DashboardSpec
 {

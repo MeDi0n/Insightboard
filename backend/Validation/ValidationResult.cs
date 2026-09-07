@@ -1,6 +1,6 @@
-using backend.Models;
+using Insightboard.Api.Models.Dashboards;
 
-namespace backend.Validation;
+namespace Insightboard.Api.Validation;
 
 public class ValidationResult
 {

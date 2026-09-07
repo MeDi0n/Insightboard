@@ -1,4 +1,4 @@
-namespace backend.Models;
+namespace Insightboard.Api.Models.Charts;
 
 public enum ChartType
 {

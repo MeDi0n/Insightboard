@@ -1,7 +1,7 @@
 using Anthropic;
 using Anthropic.Models.Messages;
 
-namespace backend.Ai;
+namespace Insightboard.Api.Ai;
 
 public class AnthropicAiProvider : IAiProvider
 {
