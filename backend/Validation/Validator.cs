@@ -61,15 +61,19 @@ public ValidationResult Validate(string aiResponse, List<string> columns)
              return new ValidationResult{IsValid = false, Errors = errors};
         }
 
-        var allowedTypes = new List<string>{"bar", "line"};
-
         foreach (var chart in response.Charts!)
         {
-            if (!allowedTypes.Contains(chart.Type)) { errors.Add("unsupported chart type"); }
+            if (!Enum.TryParse<ChartType>(chart.Type, ignoreCase: true, out var parsed))
+            {
+                errors.Add("unsupported chart type");
+            }
+            else
+            {
+                chart.Type = parsed.ToString().ToLowerInvariant();
+            }
             if (!columns.Contains(chart.X))         { errors.Add("x column not found"); }
             if (!columns.Contains(chart.Y))         { errors.Add("y column not found"); }
         }
-
         if(errors.Count > 0)
         {
              return new ValidationResult{IsValid = false, Errors = errors};

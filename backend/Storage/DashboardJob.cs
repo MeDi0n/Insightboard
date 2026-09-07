@@ -4,6 +4,6 @@ namespace backend.Storage;
 
 public class DashboardJob
 {
-    public string Status { get; set; } = "processing";
+    public DashboardStatus Status { get; set; } = DashboardStatus.Processing;
     public DashboardSpec? Spec { get; set; } = null;
 }

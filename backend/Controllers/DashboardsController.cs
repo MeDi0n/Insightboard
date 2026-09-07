@@ -53,7 +53,7 @@ public class DashboardsController : ControllerBase
             return BadRequest(new {error = "Unsupported file type. Upload .csv, .xlsx or .pdf."});
         }
         var id = Guid.NewGuid();
-        var job = new DashboardJob{Status = "processing"};
+        var job = new DashboardJob{Status = DashboardStatus.Processing};
         TableData parsed;
         try
         {
@@ -70,11 +70,11 @@ public class DashboardsController : ControllerBase
         var spec = await _generator.Generate(parsed);
         if(spec == null)
         {
-        job.Status = "failed";
+        job.Status = DashboardStatus.Failed;
         }
         else
         {
-        job.Status = "done";
+        job.Status = DashboardStatus.Done;
         job.Spec =  spec;
         }
         });
