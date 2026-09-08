@@ -14,14 +14,15 @@ public class AnthropicAiProvider : IAiProvider
 
     public async Task<string> GetResponseAsync(string prompt)
     {
-        var message = await _client.Messages.Create(new MessageCreateParams
-    {
-        Model = "claude-haiku-4-5",
-        MaxTokens = 1024,
-        Messages = [ new() { Role = Role.User, Content = prompt } ]
-    });
+        var message = await _client.Messages.Create(
+            new MessageCreateParams
+            {
+                Model = "claude-haiku-4-5",
+                MaxTokens = 1024,
+                Messages = [new() { Role = Role.User, Content = prompt }],
+            }
+        );
         var text = message.Content.Select(b => b.Value).OfType<TextBlock>().First().Text;
         return text;
-
     }
 }

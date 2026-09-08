@@ -14,7 +14,7 @@ public class DashboardStore
 
     public DashboardModel? Get(Guid id)
     {
-       _jobs.TryGetValue(id, out var job);
-       return job;
+        _jobs.TryGetValue(id, out var job);
+        return job;
     }
 }

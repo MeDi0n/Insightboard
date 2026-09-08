@@ -1,5 +1,5 @@
-using Insightboard.Api.Validation;
 using DocumentFormat.OpenXml.Math;
+using Insightboard.Api.Validation;
 
 namespace ValidatorTests;
 
@@ -11,8 +11,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
-        """;
+            {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act
@@ -47,8 +47,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
-        """;
+            {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
+            """;
         List<string> columns = [];
 
         // Act
@@ -64,8 +64,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{}]}
-        """;
+            {"charts":[{}]}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act
@@ -81,8 +81,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{"type":"bar","title":"sales","x":"banana","y":"sales"}]}
-        """;
+            {"charts":[{"type":"bar","title":"sales","x":"banana","y":"sales"}]}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act
@@ -98,8 +98,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{"type":"","title":"","x":"","y":""}]}
-        """;
+            {"charts":[{"type":"","title":"","x":"","y":""}]}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act
@@ -132,8 +132,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts":[{"type":"","title":"sales","x":"month","y":"sales"}]}
-        """;
+            {"charts":[{"type":"","title":"sales","x":"month","y":"sales"}]}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act
@@ -151,8 +151,8 @@ public class ValidatorTests
         // Arrange
         var validator = new Validator();
         var example = """
-        {"charts": null}
-        """;
+            {"charts": null}
+            """;
         List<string> columns = ["month", "sales"];
 
         // Act

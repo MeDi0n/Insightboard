@@ -4,5 +4,5 @@ public enum DashboardStatus
 {
     Processing,
     Done,
-    Failed
+    Failed,
 }

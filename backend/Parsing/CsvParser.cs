@@ -8,11 +8,12 @@ public class CsvParser : IFileParser
     {
         return string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase);
     }
+
     public TableData Parse(IFormFile file)
     {
         using var reader = new StreamReader(file.OpenReadStream());
         var headerLine = reader.ReadLine();
-        if(string.IsNullOrWhiteSpace(headerLine))
+        if (string.IsNullOrWhiteSpace(headerLine))
         {
             throw new InvalidDataException("file has no header row");
         }
@@ -24,9 +25,9 @@ public class CsvParser : IFileParser
             var values = line.Split(",");
 
             var dictionary = new Dictionary<string, string>();
-            for(int i = 0; i < columns.Count; i++)
+            for (int i = 0; i < columns.Count; i++)
             {
-                if(i < values.Length)
+                if (i < values.Length)
                 {
                     dictionary[columns[i]] = values[i];
                 }
@@ -34,11 +35,10 @@ public class CsvParser : IFileParser
                 {
                     dictionary[columns[i]] = "";
                 }
-
             }
             rows.Add(dictionary);
         }
 
-        return new TableData {Columns = columns, Rows = rows};
+        return new TableData { Columns = columns, Rows = rows };
     }
 }

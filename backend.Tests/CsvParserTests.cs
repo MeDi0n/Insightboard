@@ -1,17 +1,17 @@
 using System.Text;
-using Microsoft.AspNetCore.Http;
 using Insightboard.Api.Parsing;
+using Microsoft.AspNetCore.Http;
 
 namespace CsvParserTests;
 
-public class CsvParserTests {
-
-private static IFormFile MakeFile(string content, string name)
+public class CsvParserTests
 {
-    var bytes = Encoding.UTF8.GetBytes(content);
-    var stream = new MemoryStream(bytes);
-    return new FormFile(stream, 0, bytes.Length, "file", name);
-}
+    private static IFormFile MakeFile(string content, string name)
+    {
+        var bytes = Encoding.UTF8.GetBytes(content);
+        var stream = new MemoryStream(bytes);
+        return new FormFile(stream, 0, bytes.Length, "file", name);
+    }
 
     [Fact]
     public void Parse_ValidCsv_ReturnsColumnsAndRows()
@@ -20,10 +20,10 @@ private static IFormFile MakeFile(string content, string name)
 
         // Arrange
         var csv = """
-        month,sales
-        Jan,100
-        Feb,150
-        """;
+            month,sales
+            Jan,100
+            Feb,150
+            """;
 
         // Act
         var csvFile = MakeFile(csv, "test.csv");
@@ -43,10 +43,10 @@ private static IFormFile MakeFile(string content, string name)
 
         // Arrange
         var csv = """
-        month,sales,awards
-        Jan,100,2
-        Feb,150
-        """;
+            month,sales,awards
+            Jan,100,2
+            Feb,150
+            """;
 
         // Act
         var csvFile = MakeFile(csv, "test.csv");
@@ -67,9 +67,8 @@ private static IFormFile MakeFile(string content, string name)
         // Arrange
         var csv = """
 
-        Jan,100
-        """;
-
+            Jan,100
+            """;
 
         // Act
         var csvFile = MakeFile(csv, "test.csv");

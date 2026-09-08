@@ -1,39 +1,46 @@
 using System.Text.Json;
 using Insightboard.Api.Models.Charts;
 using Insightboard.Api.Models.Dashboards;
+
 namespace Insightboard.Api.Validation;
 
-public class Validator {
-
-public ValidationResult Validate(string aiResponse, List<string> columns)
+public class Validator
 {
-
-
-    DashboardSpec? response;
-    try
+    public ValidationResult Validate(string aiResponse, List<string> columns)
+    {
+        DashboardSpec? response;
+        try
         {
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-           response =  JsonSerializer.Deserialize<DashboardSpec>(aiResponse, options);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            response = JsonSerializer.Deserialize<DashboardSpec>(aiResponse, options);
         }
-    catch(JsonException)
+        catch (JsonException)
         {
-            return new ValidationResult{IsValid = false, Errors = new List<string>{"invalid Json"}};
+            return new ValidationResult
+            {
+                IsValid = false,
+                Errors = new List<string> { "invalid Json" },
+            };
         }
 
-        if(response == null)
+        if (response == null)
         {
-            return new ValidationResult{IsValid = false, Errors = new List<string>{"result is null"}};
+            return new ValidationResult
+            {
+                IsValid = false,
+                Errors = new List<string> { "result is null" },
+            };
         }
 
         var errors = new List<string>();
 
-        if(response.Charts == null || response.Charts.Count == 0)
+        if (response.Charts == null || response.Charts.Count == 0)
         {
             errors.Add("no charts");
         }
         else
         {
-            foreach(var chart in response.Charts)
+            foreach (var chart in response.Charts)
             {
                 if (string.IsNullOrWhiteSpace(chart.Type))
                 {
@@ -57,9 +64,9 @@ public ValidationResult Validate(string aiResponse, List<string> columns)
             }
         }
 
-         if(errors.Count > 0)
+        if (errors.Count > 0)
         {
-             return new ValidationResult{IsValid = false, Errors = errors};
+            return new ValidationResult { IsValid = false, Errors = errors };
         }
 
         foreach (var chart in response.Charts!)
@@ -72,14 +79,20 @@ public ValidationResult Validate(string aiResponse, List<string> columns)
             {
                 chart.Type = parsed.ToString().ToLowerInvariant();
             }
-            if (!columns.Contains(chart.X))         { errors.Add("x column not found"); }
-            if (!columns.Contains(chart.Y))         { errors.Add("y column not found"); }
+            if (!columns.Contains(chart.X))
+            {
+                errors.Add("x column not found");
+            }
+            if (!columns.Contains(chart.Y))
+            {
+                errors.Add("y column not found");
+            }
         }
-        if(errors.Count > 0)
+        if (errors.Count > 0)
         {
-             return new ValidationResult{IsValid = false, Errors = errors};
+            return new ValidationResult { IsValid = false, Errors = errors };
         }
 
-        return new ValidationResult{IsValid = true, Spec = response};
-}
+        return new ValidationResult { IsValid = true, Spec = response };
+    }
 }
