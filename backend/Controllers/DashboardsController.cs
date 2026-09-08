@@ -1,83 +1,47 @@
-using Microsoft.AspNetCore.Mvc;
+using Insightboard.Api.Services.Abstractions;
 using Insightboard.Api.Storage;
-using Insightboard.Api.Generation;
-using Insightboard.Api.Parsing;
-using Insightboard.Api.Models.Dashboards;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Insightboard.Api.Controllers;
-
-
 
 [ApiController]
 [Route("[controller]")]
 public class DashboardsController : ControllerBase
 {
     private readonly DashboardStore _store;
-    private readonly DashboardGenerator _generator;
-    private readonly IEnumerable<IFileParser> _parsers;
+    private readonly IDashboardService _dashboardService;
 
-
-    public DashboardsController(DashboardStore store, DashboardGenerator generator, IEnumerable<IFileParser> parser)
+    public DashboardsController(DashboardStore store, IDashboardService dashboardService)
     {
-    _parsers = parser;
-    _store = store;
-    _generator = generator;
+        _store = store;
+        _dashboardService = dashboardService;
     }
 
     [HttpGet("{id}")]
-        public IActionResult GetById(Guid Id)
-        {
-            var job = _store.Get(Id);
-            if (job == null)
+    public IActionResult GetById(Guid Id)
+    {
+        var job = _store.Get(Id);
+        if (job == null)
         {
             return NotFound();
         }
-            else
+        else
         {
             return Ok(job);
         }
-        }
+    }
 
     [HttpPost]
-    public IActionResult Create(IFormFile file)
+    public async Task<IActionResult> Create(IFormFile file)
     {
-        if(file == null || file.Length == 0)
+        var result = await _dashboardService.CreateAsync(file);
+        if (result.IsSuccess == false)
         {
-            return BadRequest(new { error = "File is empty or was not provided."});
-        }
-        var ext = Path.GetExtension(file.FileName);
-        var parser = _parsers.FirstOrDefault(p => p.AllowedExtension(ext));
-        if(parser == null)
-        {
-            return BadRequest(new {error = "Unsupported file type. Upload .csv, .xlsx or .pdf."});
-        }
-        var id = Guid.NewGuid();
-        var job = new DashboardModel{Status = DashboardStatus.Processing};
-        TableData parsed;
-        try
-        {
-        parsed = parser.Parse(file);
-        }
-        catch
-        {
-            return BadRequest(new {error = "Сannot read that file"});
-        }
-        _store.Save(id, job);
-
-        _ = Task.Run(async () =>
-        {
-        var spec = await _generator.Generate(parsed);
-        if(spec == null)
-        {
-        job.Status = DashboardStatus.Failed;
+            return BadRequest(new { error = result.Error });
         }
         else
         {
-        job.Status = DashboardStatus.Done;
-        job.Spec =  spec;
+            return Accepted(new { id = result.Id });
         }
-        });
-
-        return Accepted(new {id});
     }
 }

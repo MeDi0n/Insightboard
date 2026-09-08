@@ -1,28 +1,41 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Insightboard.Api.Ai;
 using Insightboard.Api.Building;
-using Insightboard.Api.Generation;
 using Insightboard.Api.Parsing;
+using Insightboard.Api.Services;
+using Insightboard.Api.Services.Abstractions;
 using Insightboard.Api.Storage;
 using Insightboard.Api.Validation;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions((options) => {
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-    });
+builder
+    .Services.AddControllers()
+    .AddJsonOptions(
+        (options) =>
+        {
+            options.JsonSerializerOptions.Converters.Add(
+                new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+            );
+        }
+    );
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("frontend", policy =>
-        policy.WithOrigins("http://localhost:5173")  // кому разрешаем
-              .AllowAnyHeader()
-              .AllowAnyMethod());
+    options.AddPolicy(
+        "frontend",
+        policy =>
+            policy
+                .WithOrigins("http://localhost:5173") // кому разрешаем
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+    );
 });
 
 builder.Services.AddSingleton<IAiProvider, AnthropicAiProvider>();
@@ -39,7 +52,7 @@ builder.Services.AddSingleton<Validator>();
 
 builder.Services.AddSingleton<DashboardStore>();
 
-builder.Services.AddSingleton<DashboardGenerator>();
+builder.Services.AddSingleton<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 
@@ -61,4 +74,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
