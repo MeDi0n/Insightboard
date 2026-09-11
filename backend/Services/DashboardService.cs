@@ -1,4 +1,5 @@
 using Insightboard.Api.Ai;
+using Insightboard.Api.Background;
 using Insightboard.Api.Building;
 using Insightboard.Api.Models.Dashboards;
 using Insightboard.Api.Parsing;
@@ -15,13 +16,15 @@ public class DashboardService : IDashboardService
     private readonly PromptBuilder _builder;
     private readonly IEnumerable<IFileParser> _parsers;
     private readonly DashboardStore _store;
+    private readonly DashboardGenerationQueue _queue;
 
     public DashboardService(
         IAiProvider ai,
         Validator validator,
         PromptBuilder builder,
         IEnumerable<IFileParser> parsers,
-        DashboardStore store
+        DashboardStore store,
+        DashboardGenerationQueue queue
     )
     {
         _ai = ai;
@@ -29,6 +32,7 @@ public class DashboardService : IDashboardService
         _builder = builder;
         _parsers = parsers;
         _store = store;
+        _queue = queue;
     }
 
     public async Task<DashboardSpec?> GenerateAsync(TableData parsed)
@@ -84,19 +88,7 @@ public class DashboardService : IDashboardService
         var id = Guid.NewGuid();
         var dashboard = new DashboardModel { Status = DashboardStatus.Processing };
         _store.Save(id, dashboard);
-        _ = Task.Run(async () =>
-        {
-            var spec = await GenerateAsync(parsed);
-            if (spec == null)
-            {
-                dashboard.Status = DashboardStatus.Failed;
-            }
-            else
-            {
-                dashboard.Status = DashboardStatus.Done;
-                dashboard.Spec = spec;
-            }
-        });
+        await _queue.EnqueueAsync(new DashboardGenerationJob { DashboardId = id, Table = parsed });
 
         return new CreateDashboardResult { IsSuccess = true, Id = id };
     }

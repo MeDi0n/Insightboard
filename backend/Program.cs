@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Insightboard.Api.Ai;
+using Insightboard.Api.Background;
 using Insightboard.Api.Building;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services;
@@ -51,8 +52,11 @@ builder.Services.AddSingleton<IFileParser, PdfParser>();
 builder.Services.AddSingleton<Validator>();
 
 builder.Services.AddSingleton<DashboardStore>();
-
 builder.Services.AddSingleton<IDashboardService, DashboardService>();
+
+builder.Services.AddSingleton<DashboardGenerationQueue>();
+
+builder.Services.AddHostedService<DashboardGenerationWorker>();
 
 var app = builder.Build();
 
