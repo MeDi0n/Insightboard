@@ -1,3 +1,4 @@
+import DashboardSkeleton from "../DashboardSkeleton/DashboardSkeleton";
 import "./GeneratingState.css";
 
 const GeneratingState = () => {
@@ -11,14 +12,7 @@ const GeneratingState = () => {
         AI is analysing the data structure and picking chart types
       </p>
 
-      <div className="generating-grid">
-        {[0, 1].map((i) => (
-          <div className="skeleton-card" key={i}>
-            <div className="skeleton-line" />
-            <div className="skeleton-block" />
-          </div>
-        ))}
-      </div>
+      <DashboardSkeleton />
     </div>
   );
 };

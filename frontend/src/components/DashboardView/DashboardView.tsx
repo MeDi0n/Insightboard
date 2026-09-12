@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../../hooks/useDashboard";
 import { DashboardStatus } from "../../models/DashboardModel";
 import Chart from "../Charts/Chart";
+import DashboardSkeleton from "../DashboardSkeleton/DashboardSkeleton";
 import ErrorState from "../ErrorState/ErrorState";
 import GeneratingState from "../GeneratingState/GeneratingState";
 import "./DashboardView.css";
@@ -12,8 +13,9 @@ const DashboardView = ({ id }: DashboardViewProps) => {
   const { data, isLoading, isError } = useDashboard(id);
   const navigate = useNavigate();
 
-  if (isLoading || data?.status === DashboardStatus.Processing)
-    return <GeneratingState />;
+  if (isLoading) return <DashboardSkeleton />;
+
+  if (data?.status === DashboardStatus.Processing) return <GeneratingState />;
 
   if (isError)
     return (
