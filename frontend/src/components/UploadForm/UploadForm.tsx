@@ -1,41 +1,44 @@
 import axios from "axios";
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
-import api from "../../api/httpClient";
+import { useUploadDashboard } from "../../hooks/useUploadDashboard";
 import "./UploadForm.css";
 
 type UploadFormProps = {
   onCreated: (id: string) => void;
 };
 
+function getUploadErrorMessage(error: Error | null): string | null {
+  if (error == null) return null;
+
+  if (axios.isAxiosError(error)) {
+    if (error.response) {
+      return error.response?.data?.error ?? "Upload failed";
+    }
+
+    return "Server is not available right now";
+  } else {
+    return "Upload failed";
+  }
+}
+
 const UploadForm = ({ onCreated }: UploadFormProps) => {
   const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { mutate, isPending, error } = useUploadDashboard();
+  const errorMessage = getUploadErrorMessage(error);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFile(e.target.files?.[0] ?? null);
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
 
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const res = await api.post<{ id: string }>("/dashboards", formData);
-
-      onCreated(res.data.id);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.error ?? "Upload failed");
-      } else {
-        setError("Server is not available right now");
-      }
-    }
+    mutate(file, {
+      onSuccess: (data) => onCreated(data.id),
+    });
   }
 
   return (
@@ -60,9 +63,10 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
             />
             {file && <span className="filename">{file.name}</span>}
           </label>
-          {error && <span className="upload-error">{error}</span>}
-          <button type="submit" className="submit">
-            Build dashboard
+          {errorMessage && <span className="upload-error">{errorMessage}</span>}
+
+          <button type="submit" className="submit" disabled={isPending}>
+            {isPending ? "Uploading..." : "Build dashboard"}
           </button>
         </form>
       </div>
