@@ -10,9 +10,9 @@ public class PdfParser : IFileParser
         return string.Equals(extension, ".pdf", StringComparison.OrdinalIgnoreCase);
     }
 
-    public TableData Parse(IFormFile file)
+    public TableData Parse(Stream stream)
     {
-        using var document = PdfDocument.Open(file.OpenReadStream());
+        using var document = PdfDocument.Open(stream);
 
         var pages = document.GetPages();
 

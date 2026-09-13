@@ -1,16 +1,15 @@
 using System.Text;
 using Insightboard.Api.Parsing;
-using Microsoft.AspNetCore.Http;
 
 namespace CsvParserTests;
 
 public class CsvParserTests
 {
-    private static IFormFile MakeFile(string content, string name)
+    private static Stream MakeFile(string content)
     {
         var bytes = Encoding.UTF8.GetBytes(content);
         var stream = new MemoryStream(bytes);
-        return new FormFile(stream, 0, bytes.Length, "file", name);
+        return stream;
     }
 
     [Fact]
@@ -26,7 +25,7 @@ public class CsvParserTests
             """;
 
         // Act
-        var csvFile = MakeFile(csv, "test.csv");
+        var csvFile = MakeFile(csv);
 
         var result = parser.Parse(csvFile);
 
@@ -49,7 +48,7 @@ public class CsvParserTests
             """;
 
         // Act
-        var csvFile = MakeFile(csv, "test.csv");
+        var csvFile = MakeFile(csv);
 
         var result = parser.Parse(csvFile);
 
@@ -71,7 +70,7 @@ public class CsvParserTests
             """;
 
         // Act
-        var csvFile = MakeFile(csv, "test.csv");
+        var csvFile = MakeFile(csv);
 
         // Assert
         Assert.Throws<InvalidDataException>(() => parser.Parse(csvFile));

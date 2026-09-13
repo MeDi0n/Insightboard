@@ -54,9 +54,9 @@ public class DashboardService : IDashboardService
         return null;
     }
 
-    public async Task<CreateDashboardResult> CreateAsync(IFormFile file)
+    public async Task<CreateDashboardResult> CreateAsync(Stream stream, string filename)
     {
-        if (file == null || file.Length == 0)
+        if (stream.Length == 0)
         {
             return new CreateDashboardResult
             {
@@ -64,7 +64,7 @@ public class DashboardService : IDashboardService
                 Error = "File is empty or was not provided.",
             };
         }
-        var ext = Path.GetExtension(file.FileName);
+        var ext = Path.GetExtension(filename);
         var parser = _parsers.FirstOrDefault(p => p.AllowedExtension(ext));
         if (parser == null)
         {
@@ -78,7 +78,7 @@ public class DashboardService : IDashboardService
         TableData parsed;
         try
         {
-            parsed = parser.Parse(file);
+            parsed = parser.Parse(stream);
         }
         catch
         {

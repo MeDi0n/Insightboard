@@ -1,5 +1,3 @@
-using DocumentFormat.OpenXml.Office2013.PowerPoint.Roaming;
-
 namespace Insightboard.Api.Parsing;
 
 public class CsvParser : IFileParser
@@ -9,9 +7,9 @@ public class CsvParser : IFileParser
         return string.Equals(extension, ".csv", StringComparison.OrdinalIgnoreCase);
     }
 
-    public TableData Parse(IFormFile file)
+    public TableData Parse(Stream stream)
     {
-        using var reader = new StreamReader(file.OpenReadStream());
+        using var reader = new StreamReader(stream);
         var headerLine = reader.ReadLine();
         if (string.IsNullOrWhiteSpace(headerLine))
         {

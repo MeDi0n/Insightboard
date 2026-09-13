@@ -34,7 +34,9 @@ public class DashboardsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(IFormFile file)
     {
-        var result = await _dashboardService.CreateAsync(file);
+        using var stream = file.OpenReadStream();
+
+        var result = await _dashboardService.CreateAsync(stream, file.FileName);
         if (result.IsSuccess == false)
         {
             return BadRequest(new { error = result.Error });

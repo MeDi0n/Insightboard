@@ -1,7 +1,6 @@
-namespace Insightboard.Api.Parsing;
-
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Drawing.Charts;
+
+namespace Insightboard.Api.Parsing;
 
 public class ExcelParser : IFileParser
 {
@@ -10,9 +9,9 @@ public class ExcelParser : IFileParser
         return string.Equals(extension, ".xlsx", StringComparison.OrdinalIgnoreCase);
     }
 
-    public TableData Parse(IFormFile file)
+    public TableData Parse(Stream stream)
     {
-        using var workbook = new XLWorkbook(file.OpenReadStream());
+        using var workbook = new XLWorkbook(stream);
 
         var sheet = workbook.Worksheet(1);
         var rows = sheet.RowsUsed().ToList();
