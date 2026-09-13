@@ -2,11 +2,11 @@ using System.Text.Json;
 using Insightboard.Api.Models.Charts;
 using Insightboard.Api.Models.Dashboards;
 
-namespace Insightboard.Api.Validation;
+namespace Insightboard.Api.Ai.Validation;
 
-public class Validator
+public class DashboardSpecValidator
 {
-    public ValidationResult Validate(string aiResponse, List<string> columns)
+    public SpecValidationResult Validate(string aiResponse, List<string> columns)
     {
         DashboardSpec? response;
         try
@@ -16,7 +16,7 @@ public class Validator
         }
         catch (JsonException)
         {
-            return new ValidationResult
+            return new SpecValidationResult
             {
                 IsValid = false,
                 Errors = new List<string> { "invalid Json" },
@@ -25,7 +25,7 @@ public class Validator
 
         if (response == null)
         {
-            return new ValidationResult
+            return new SpecValidationResult
             {
                 IsValid = false,
                 Errors = new List<string> { "result is null" },
@@ -66,7 +66,7 @@ public class Validator
 
         if (errors.Count > 0)
         {
-            return new ValidationResult { IsValid = false, Errors = errors };
+            return new SpecValidationResult { IsValid = false, Errors = errors };
         }
 
         foreach (var chart in response.Charts!)
@@ -90,9 +90,9 @@ public class Validator
         }
         if (errors.Count > 0)
         {
-            return new ValidationResult { IsValid = false, Errors = errors };
+            return new SpecValidationResult { IsValid = false, Errors = errors };
         }
 
-        return new ValidationResult { IsValid = true, Spec = response };
+        return new SpecValidationResult { IsValid = true, Spec = response };
     }
 }

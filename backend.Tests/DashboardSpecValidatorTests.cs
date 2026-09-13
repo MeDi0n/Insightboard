@@ -1,15 +1,14 @@
-using DocumentFormat.OpenXml.Math;
-using Insightboard.Api.Validation;
+using Insightboard.Api.Ai.Validation;
 
-namespace ValidatorTests;
+namespace DashboardSpecValidatorTests;
 
-public class ValidatorTests
+public class DashboardSpecValidatorTests
 {
     [Fact]
     public void Validate_ValidResponse_ReturnsValid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
             """;
@@ -29,7 +28,7 @@ public class ValidatorTests
     public void Validate_BrokenJson_ReturnsInvalid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = "hello";
         List<string> columns = ["month", "sales"];
 
@@ -45,7 +44,7 @@ public class ValidatorTests
     public void Validate_NoColumns_ReturnsInvalid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
             """;
@@ -62,7 +61,7 @@ public class ValidatorTests
     public void Validate_NoCharts_ReturnsInvalid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{}]}
             """;
@@ -79,7 +78,7 @@ public class ValidatorTests
     public void Validate_UnknownColumn_ReturnsInvalid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{"type":"bar","title":"sales","x":"banana","y":"sales"}]}
             """;
@@ -96,7 +95,7 @@ public class ValidatorTests
     public void Validate_EmptyChartFields_ReturnsAllErrors()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{"type":"","title":"","x":"","y":""}]}
             """;
@@ -114,7 +113,7 @@ public class ValidatorTests
     public void Validate_BrokenJson_ReturnsSingleError()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = "hello";
         List<string> columns = ["month", "sales"];
 
@@ -130,7 +129,7 @@ public class ValidatorTests
     public void Validate_EmptyChartType_ReturnsStructureError()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts":[{"type":"","title":"sales","x":"month","y":"sales"}]}
             """;
@@ -149,7 +148,7 @@ public class ValidatorTests
     public void Validate_NullCharts_ReturnsInvalid()
     {
         // Arrange
-        var validator = new Validator();
+        var validator = new DashboardSpecValidator();
         var example = """
             {"charts": null}
             """;

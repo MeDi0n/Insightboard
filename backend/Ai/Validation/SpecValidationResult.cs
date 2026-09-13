@@ -1,8 +1,8 @@
 using Insightboard.Api.Models.Dashboards;
 
-namespace Insightboard.Api.Validation;
+namespace Insightboard.Api.Ai.Validation;
 
-public class ValidationResult
+public class SpecValidationResult
 {
     public bool IsValid { get; set; }
     public DashboardSpec? Spec { get; set; }

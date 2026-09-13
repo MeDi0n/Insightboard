@@ -1,18 +1,18 @@
 using Insightboard.Api.Ai;
+using Insightboard.Api.Ai.Validation;
 using Insightboard.Api.Background;
 using Insightboard.Api.Building;
 using Insightboard.Api.Models.Dashboards;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services.Abstractions;
 using Insightboard.Api.Storage;
-using Insightboard.Api.Validation;
 
 namespace Insightboard.Api.Services;
 
 public class DashboardService : IDashboardService
 {
     private readonly IAiProvider _ai;
-    private readonly Validator _validator;
+    private readonly DashboardSpecValidator _validator;
     private readonly PromptBuilder _builder;
     private readonly IEnumerable<IFileParser> _parsers;
     private readonly DashboardStore _store;
@@ -20,7 +20,7 @@ public class DashboardService : IDashboardService
 
     public DashboardService(
         IAiProvider ai,
-        Validator validator,
+        DashboardSpecValidator validator,
         PromptBuilder builder,
         IEnumerable<IFileParser> parsers,
         DashboardStore store,

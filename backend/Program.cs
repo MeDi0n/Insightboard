@@ -1,13 +1,13 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Insightboard.Api.Ai;
+using Insightboard.Api.Ai.Validation;
 using Insightboard.Api.Background;
 using Insightboard.Api.Building;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services;
 using Insightboard.Api.Services.Abstractions;
 using Insightboard.Api.Storage;
-using Insightboard.Api.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +49,7 @@ builder.Services.AddSingleton<IFileParser, ExcelParser>();
 
 builder.Services.AddSingleton<IFileParser, PdfParser>();
 
-builder.Services.AddSingleton<Validator>();
+builder.Services.AddSingleton<DashboardSpecValidator>();
 
 builder.Services.AddSingleton<DashboardStore>();
 builder.Services.AddSingleton<IDashboardService, DashboardService>();
