@@ -1,6 +1,6 @@
-namespace Insightboard.Api.Building;
+namespace Insightboard.Api.Ai.Prompts;
 
-public class PromptBuilder
+public class DashboardPromptBuilder
 {
     public string Build(List<string> columns, List<string> errors)
     {

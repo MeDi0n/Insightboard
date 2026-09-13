@@ -1,7 +1,7 @@
 using Insightboard.Api.Ai;
+using Insightboard.Api.Ai.Prompts;
 using Insightboard.Api.Ai.Validation;
 using Insightboard.Api.Background;
-using Insightboard.Api.Building;
 using Insightboard.Api.Models.Dashboards;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services.Abstractions;
@@ -13,7 +13,7 @@ public class DashboardService : IDashboardService
 {
     private readonly IAiProvider _ai;
     private readonly DashboardSpecValidator _validator;
-    private readonly PromptBuilder _builder;
+    private readonly DashboardPromptBuilder _builder;
     private readonly IEnumerable<IFileParser> _parsers;
     private readonly DashboardStore _store;
     private readonly DashboardGenerationQueue _queue;
@@ -21,7 +21,7 @@ public class DashboardService : IDashboardService
     public DashboardService(
         IAiProvider ai,
         DashboardSpecValidator validator,
-        PromptBuilder builder,
+        DashboardPromptBuilder builder,
         IEnumerable<IFileParser> parsers,
         DashboardStore store,
         DashboardGenerationQueue queue

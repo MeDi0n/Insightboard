@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Insightboard.Api.Ai;
+using Insightboard.Api.Ai.Prompts;
 using Insightboard.Api.Ai.Validation;
 using Insightboard.Api.Background;
-using Insightboard.Api.Building;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services;
 using Insightboard.Api.Services.Abstractions;
@@ -41,7 +41,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<IAiProvider, AnthropicAiProvider>();
 
-builder.Services.AddSingleton<PromptBuilder>();
+builder.Services.AddSingleton<DashboardPromptBuilder>();
 
 builder.Services.AddSingleton<IFileParser, CsvParser>();
 
