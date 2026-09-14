@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useDashboard } from "../../hooks/useDashboard";
+import { useGetDashboard } from "../../hooks/useGetDashboard";
 import { DashboardStatus } from "../../models/DashboardModel";
 import Chart from "../Charts/Chart";
 import DashboardSkeleton from "../DashboardSkeleton/DashboardSkeleton";
@@ -10,7 +10,7 @@ import "./DashboardView.css";
 export type DashboardViewProps = { id: string };
 
 const DashboardView = ({ id }: DashboardViewProps) => {
-  const { data, isLoading, isError } = useDashboard(id);
+  const { data, isLoading, isError } = useGetDashboard(id);
   const navigate = useNavigate();
 
   if (isLoading) return <DashboardSkeleton />;

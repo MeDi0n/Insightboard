@@ -6,7 +6,7 @@ import {
   type Dashboard,
 } from "../models/DashboardModel";
 
-export function useDashboard(id: string) {
+export function useGetDashboard(id: string) {
   return useQuery<Dashboard>({
     queryKey: ["dashboard", id],
     queryFn: async () => {
