@@ -82,7 +82,20 @@ public class DashboardService : IDashboardService
         }
         catch
         {
-            return new CreateDashboardResult { IsSuccess = false, Error = "Сannot read that file" };
+            return new CreateDashboardResult
+            {
+                IsSuccess = false,
+                Error = "Cannot read that file.",
+            };
+        }
+
+        if (parsed.Rows.Count == 0)
+        {
+            return new CreateDashboardResult
+            {
+                IsSuccess = false,
+                Error = "The file has no data rows.",
+            };
         }
 
         var id = Guid.NewGuid();
