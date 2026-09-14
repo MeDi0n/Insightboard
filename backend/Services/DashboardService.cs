@@ -42,7 +42,7 @@ public class DashboardService : IDashboardService
         for (int i = 0; i < 3; i++)
         {
             var prompt = _builder.Build(columns, errors);
-            var response = await _ai.GetResponseAsync(prompt);
+            var response = await _ai.SendMessageAsync(prompt);
             var result = _validator.Validate(response, columns);
             if (result.IsValid)
             {

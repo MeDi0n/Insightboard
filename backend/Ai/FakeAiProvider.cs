@@ -2,7 +2,7 @@ namespace Insightboard.Api.Ai;
 
 public class FakeAiProvider : IAiProvider
 {
-    public Task<string> GetResponseAsync(string prompt)
+    public Task<string> SendMessageAsync(string prompt)
     {
         return Task.FromResult(
             """

@@ -12,7 +12,7 @@ public class AnthropicAiProvider : IAiProvider
         _client = new AnthropicClient { ApiKey = config["Anthropic:ApiKey"]!.Trim() };
     }
 
-    public async Task<string> GetResponseAsync(string prompt)
+    public async Task<string> SendMessageAsync(string prompt)
     {
         var message = await _client.Messages.Create(
             new MessageCreateParams
