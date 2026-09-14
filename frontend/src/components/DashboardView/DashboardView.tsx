@@ -6,39 +6,30 @@ import DashboardSkeleton from "../DashboardSkeleton/DashboardSkeleton";
 import ErrorState from "../ErrorState/ErrorState";
 import GeneratingState from "../GeneratingState/GeneratingState";
 import "./DashboardView.css";
+import { getDashboardError } from "./getDashboardError";
 
 export type DashboardViewProps = { id: string };
 
 const DashboardView = ({ id }: DashboardViewProps) => {
-  const { data, isLoading, isError } = useGetDashboard(id);
+  const { data, isLoading, error } = useGetDashboard(id);
   const navigate = useNavigate();
+  const errorInfo = getDashboardError(error, data);
 
   if (isLoading) return <DashboardSkeleton />;
 
   if (data?.status === DashboardStatus.Processing) return <GeneratingState />;
 
-  if (isError)
+  if (errorInfo)
     return (
       <ErrorState
-        actionLabel="Start over"
-        title="Could not reach the server"
-        text="The request failed. Check your connection and try again."
+        title={errorInfo.title}
+        text={errorInfo.text}
+        actionLabel="Upload another file"
         onRetry={() => navigate("/")}
       />
     );
 
   if (!data) return null;
-
-  if (data.status === DashboardStatus.Failed)
-    return (
-      <ErrorState
-        actionLabel="Upload another file"
-        title="Could not build the dashboard"
-        text="AI failed to produce a valid result after 3 attempts. Check the file format and try again."
-        onRetry={() => navigate("/")}
-      />
-    );
-
   const spec = data.spec;
   if (!spec) return null;
 
