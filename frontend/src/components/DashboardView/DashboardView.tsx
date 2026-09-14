@@ -29,9 +29,17 @@ const DashboardView = ({ id }: DashboardViewProps) => {
       />
     );
 
-  if (!data) return null;
+  if (!data?.spec)
+    return (
+      <ErrorState
+        title="Dashboard is empty"
+        text="Something went wrong while building it. Try uploading the file again."
+        actionLabel="Upload another file"
+        onRetry={() => navigate("/")}
+      />
+    );
+
   const spec = data.spec;
-  if (!spec) return null;
 
   return (
     <div className="page-width">
