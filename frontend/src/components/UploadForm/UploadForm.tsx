@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Upload } from "lucide-react";
 import React, { useState } from "react";
@@ -26,6 +27,7 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
   const [file, setFile] = useState<File | null>(null);
   const { mutate, isPending, error } = useUploadDashboard();
   const errorMessage = getUploadErrorMessage(error);
+  const queryClient = useQueryClient();
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFile(e.target.files?.[0] ?? null);
@@ -37,7 +39,10 @@ const UploadForm = ({ onCreated }: UploadFormProps) => {
     if (!file) return;
 
     mutate(file, {
-      onSuccess: (data) => onCreated(data.id),
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["dashboards"] });
+        onCreated(data.id);
+      },
     });
   }
 

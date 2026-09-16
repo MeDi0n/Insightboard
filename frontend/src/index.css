@@ -105,3 +105,19 @@ body {
   margin-inline: auto;
   padding-inline: var(--space-5);
 }
+
+.app-layout {
+  display: flex;
+  align-items: flex-start;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    display: block;
+  }
+}
