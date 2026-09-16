@@ -19,6 +19,9 @@ export function useGetDashboard(id: string) {
       if (error instanceof ZodError) return false;
       if (isAxiosError(error) && error.response && error.response.status < 500)
         return false;
+      if (isAxiosError(error) && !error.response) {
+        return failureCount < 1;
+      }
       return failureCount < 3;
     },
     refetchInterval: (query) => {
