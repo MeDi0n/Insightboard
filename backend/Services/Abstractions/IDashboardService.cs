@@ -7,4 +7,5 @@ public interface IDashboardService
 {
     Task<DashboardSpec?> GenerateAsync(TableData parsed);
     Task<CreateDashboardResult> CreateAsync(Stream stream, string filename);
+    IReadOnlyCollection<DashboardListItem> GetAll();
 }

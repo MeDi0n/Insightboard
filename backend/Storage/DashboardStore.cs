@@ -5,16 +5,21 @@ namespace Insightboard.Api.Storage;
 
 public class DashboardStore
 {
-    private readonly ConcurrentDictionary<Guid, DashboardModel> _jobs = new();
+    private readonly ConcurrentDictionary<Guid, DashboardModel> _dashboards = new();
 
-    public void Save(Guid id, DashboardModel job)
+    public void Save(Guid id, DashboardModel dashboard)
     {
-        _jobs[id] = job;
+        _dashboards[id] = dashboard;
     }
 
     public DashboardModel? Get(Guid id)
     {
-        _jobs.TryGetValue(id, out var job);
-        return job;
+        _dashboards.TryGetValue(id, out var dashboard);
+        return dashboard;
+    }
+
+    public IReadOnlyCollection<DashboardModel> GetAll()
+    {
+        return _dashboards.Values.ToList();
     }
 }

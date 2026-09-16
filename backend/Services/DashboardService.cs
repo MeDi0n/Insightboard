@@ -1,3 +1,5 @@
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Insightboard.Api.Ai;
 using Insightboard.Api.Ai.Prompts;
 using Insightboard.Api.Ai.Validation;
@@ -64,6 +66,7 @@ public class DashboardService : IDashboardService
                 Error = "File is empty or was not provided.",
             };
         }
+
         var ext = Path.GetExtension(filename);
         var parser = _parsers.FirstOrDefault(p => p.AllowedExtension(ext));
         if (parser == null)
@@ -99,10 +102,31 @@ public class DashboardService : IDashboardService
         }
 
         var id = Guid.NewGuid();
-        var dashboard = new DashboardModel { Status = DashboardStatus.Processing };
+        var dashboard = new DashboardModel
+        {
+            Status = DashboardStatus.Processing,
+            Id = id,
+            FileName = filename,
+            CreatedAt = DateTimeOffset.UtcNow,
+        };
         _store.Save(id, dashboard);
         await _queue.EnqueueAsync(new DashboardGenerationJob { DashboardId = id, Table = parsed });
 
         return new CreateDashboardResult { IsSuccess = true, Id = id };
+    }
+
+    public IReadOnlyCollection<DashboardListItem> GetAll()
+    {
+        return _store
+            .GetAll()
+            .OrderByDescending(d => d.CreatedAt)
+            .Select(d => new DashboardListItem
+            {
+                Id = d.Id,
+                FileName = d.FileName,
+                CreatedAt = d.CreatedAt,
+                Status = d.Status,
+            })
+            .ToList();
     }
 }

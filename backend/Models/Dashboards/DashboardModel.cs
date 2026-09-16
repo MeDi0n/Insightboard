@@ -4,4 +4,7 @@ public class DashboardModel
 {
     public DashboardStatus Status { get; set; } = DashboardStatus.Processing;
     public DashboardSpec? Spec { get; set; } = null;
+    public Guid Id { get; set; }
+    public required string FileName { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 }

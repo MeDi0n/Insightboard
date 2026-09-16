@@ -46,4 +46,10 @@ public class DashboardsController : ControllerBase
             return Accepted(new { id = result.Id });
         }
     }
+
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        return Ok(_dashboardService.GetAll());
+    }
 }
