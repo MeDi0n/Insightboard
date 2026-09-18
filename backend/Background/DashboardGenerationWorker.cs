@@ -49,6 +49,7 @@ public class DashboardGenerationWorker : BackgroundService
                     dashboard.Status = DashboardStatus.Done;
                     dashboard.Spec = spec;
                 }
+                _store.Update(dashboard);
             }
             catch (Exception ex)
             {
@@ -58,6 +59,7 @@ public class DashboardGenerationWorker : BackgroundService
                     "Generation failed for dashboard {DashboardId}",
                     job.DashboardId
                 );
+                _store.Update(dashboard);
             }
         }
     }

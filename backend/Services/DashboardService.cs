@@ -109,7 +109,7 @@ public class DashboardService : IDashboardService
             FileName = filename,
             CreatedAt = DateTimeOffset.UtcNow,
         };
-        _store.Save(id, dashboard);
+        _store.Add(dashboard);
         await _queue.EnqueueAsync(new DashboardGenerationJob { DashboardId = id, Table = parsed });
 
         return new CreateDashboardResult { IsSuccess = true, Id = id };

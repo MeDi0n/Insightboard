@@ -1,25 +1,40 @@
-using System.Collections.Concurrent;
 using Insightboard.Api.Models.Dashboards;
+using Microsoft.EntityFrameworkCore;
 
 namespace Insightboard.Api.Storage;
 
 public class DashboardStore
 {
-    private readonly ConcurrentDictionary<Guid, DashboardModel> _dashboards = new();
+    private readonly IDbContextFactory<AppDbContext> _factory;
 
-    public void Save(Guid id, DashboardModel dashboard)
+    public DashboardStore(IDbContextFactory<AppDbContext> factory)
     {
-        _dashboards[id] = dashboard;
+        _factory = factory;
+    }
+
+    public void Add(DashboardModel dashboard)
+    {
+        using var db = _factory.CreateDbContext();
+        db.Dashboards.Add(dashboard);
+        db.SaveChanges();
+    }
+
+    public void Update(DashboardModel dashboard)
+    {
+        using var db = _factory.CreateDbContext();
+        db.Dashboards.Update(dashboard);
+        db.SaveChanges();
     }
 
     public DashboardModel? Get(Guid id)
     {
-        _dashboards.TryGetValue(id, out var dashboard);
-        return dashboard;
+        using var db = _factory.CreateDbContext();
+        return db.Dashboards.Find(id);
     }
 
     public IReadOnlyCollection<DashboardModel> GetAll()
     {
-        return _dashboards.Values.ToList();
+        using var db = _factory.CreateDbContext();
+        return db.Dashboards.ToList();
     }
 }
