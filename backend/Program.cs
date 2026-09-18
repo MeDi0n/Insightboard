@@ -65,6 +65,12 @@ builder.Services.AddHostedService<DashboardGenerationWorker>();
 
 var app = builder.Build();
 
+var dbFactory = app.Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+using (var db = dbFactory.CreateDbContext())
+{
+    db.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
