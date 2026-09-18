@@ -18,9 +18,9 @@ public class DashboardsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(Guid Id)
+    public async Task<IActionResult> GetById(Guid Id)
     {
-        var job = _store.Get(Id);
+        var job = await _store.Get(Id);
         if (job == null)
         {
             return NotFound();
@@ -48,8 +48,8 @@ public class DashboardsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        return Ok(_dashboardService.GetAll());
+        return Ok(await _dashboardService.GetAll());
     }
 }

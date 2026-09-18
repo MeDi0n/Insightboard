@@ -12,29 +12,37 @@ public class DashboardStore
         _factory = factory;
     }
 
-    public void Add(DashboardModel dashboard)
+    public async Task Add(DashboardModel dashboard)
     {
         using var db = _factory.CreateDbContext();
         db.Dashboards.Add(dashboard);
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public void Update(DashboardModel dashboard)
+    public async Task Update(DashboardModel dashboard)
     {
         using var db = _factory.CreateDbContext();
         db.Dashboards.Update(dashboard);
-        db.SaveChanges();
+        await db.SaveChangesAsync();
     }
 
-    public DashboardModel? Get(Guid id)
+    public async Task<DashboardModel?> Get(Guid id)
     {
         using var db = _factory.CreateDbContext();
-        return db.Dashboards.Find(id);
+        return await db.Dashboards.FindAsync(id);
     }
 
-    public IReadOnlyCollection<DashboardModel> GetAll()
+    public async Task<IReadOnlyCollection<DashboardModel>> GetAll()
     {
         using var db = _factory.CreateDbContext();
-        return db.Dashboards.ToList();
+        return await db.Dashboards.ToListAsync();
+    }
+
+    public async Task<int> FailUnfinished()
+    {
+        using var db = _factory.CreateDbContext();
+        return await db
+            .Dashboards.Where(d => d.Status == DashboardStatus.Processing)
+            .ExecuteUpdateAsync(s => s.SetProperty(d => d.Status, DashboardStatus.Failed));
     }
 }

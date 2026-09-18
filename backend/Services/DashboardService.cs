@@ -109,16 +109,15 @@ public class DashboardService : IDashboardService
             FileName = filename,
             CreatedAt = DateTimeOffset.UtcNow,
         };
-        _store.Add(dashboard);
+        await _store.Add(dashboard);
         await _queue.EnqueueAsync(new DashboardGenerationJob { DashboardId = id, Table = parsed });
 
         return new CreateDashboardResult { IsSuccess = true, Id = id };
     }
 
-    public IReadOnlyCollection<DashboardListItem> GetAll()
+    public async Task<IReadOnlyCollection<DashboardListItem>> GetAll()
     {
-        return _store
-            .GetAll()
+        return (await _store.GetAll())
             .OrderByDescending(d => d.CreatedAt)
             .Select(d => new DashboardListItem
             {
