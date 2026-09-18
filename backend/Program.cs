@@ -8,6 +8,7 @@ using Insightboard.Api.Parsing;
 using Insightboard.Api.Services;
 using Insightboard.Api.Services.Abstractions;
 using Insightboard.Api.Storage;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<IAiProvider, AnthropicAiProvider>();
 
 builder.Services.AddSingleton<DashboardPromptBuilder>();
+
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+);
 
 builder.Services.AddSingleton<IFileParser, CsvParser>();
 
