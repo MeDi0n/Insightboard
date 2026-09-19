@@ -57,6 +57,7 @@ builder.Services.AddSingleton<IFileParser, PdfParser>();
 builder.Services.AddSingleton<DashboardSpecValidator>();
 
 builder.Services.AddSingleton<DashboardStore>();
+builder.Services.AddSingleton<AiCallLogStore>();
 builder.Services.AddSingleton<IDashboardService, DashboardService>();
 
 builder.Services.AddSingleton<DashboardGenerationQueue>();

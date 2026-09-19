@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Insightboard.Api.Models.AiCalls;
 using Insightboard.Api.Models.Dashboards;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ public class AppDbContext : DbContext
         : base(options) { }
 
     public DbSet<DashboardModel> Dashboards => Set<DashboardModel>();
+    public DbSet<AiCallLog> AiCallLogs => Set<AiCallLog>();
 
     private static readonly JsonSerializerOptions JsonOptions = new();
 
@@ -24,5 +26,11 @@ public class AppDbContext : DbContext
                 spec => JsonSerializer.Serialize(spec, JsonOptions),
                 json => JsonSerializer.Deserialize<DashboardSpec>(json, JsonOptions)
             );
+
+        modelBuilder
+            .Entity<AiCallLog>()
+            .HasOne<DashboardModel>()
+            .WithMany()
+            .HasForeignKey(l => l.DashboardId);
     }
 }
