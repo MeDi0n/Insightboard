@@ -1,9 +1,9 @@
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Diagnostics;
 using Insightboard.Api.Ai;
 using Insightboard.Api.Ai.Prompts;
 using Insightboard.Api.Ai.Validation;
 using Insightboard.Api.Background;
+using Insightboard.Api.Models.AiCalls;
 using Insightboard.Api.Models.Dashboards;
 using Insightboard.Api.Parsing;
 using Insightboard.Api.Services.Abstractions;
@@ -19,6 +19,7 @@ public class DashboardService : IDashboardService
     private readonly IEnumerable<IFileParser> _parsers;
     private readonly DashboardStore _store;
     private readonly DashboardGenerationQueue _queue;
+    private readonly AiCallLogStore _aiCallLogStore;
 
     public DashboardService(
         IAiProvider ai,
@@ -26,7 +27,8 @@ public class DashboardService : IDashboardService
         DashboardPromptBuilder builder,
         IEnumerable<IFileParser> parsers,
         DashboardStore store,
-        DashboardGenerationQueue queue
+        DashboardGenerationQueue queue,
+        AiCallLogStore aiCallLogStore
     )
     {
         _ai = ai;
@@ -35,17 +37,38 @@ public class DashboardService : IDashboardService
         _parsers = parsers;
         _store = store;
         _queue = queue;
+        _aiCallLogStore = aiCallLogStore;
     }
 
-    public async Task<DashboardSpec?> GenerateAsync(TableData parsed)
+    public async Task<DashboardSpec?> GenerateAsync(Guid dashboardId, TableData parsed)
     {
         var columns = parsed.Columns;
         var errors = new List<string>();
         for (int i = 0; i < 3; i++)
         {
             var prompt = _builder.Build(columns, errors);
+
+            var stopwatch = Stopwatch.StartNew();
             var response = await _ai.SendMessageAsync(prompt);
-            var result = _validator.Validate(response, columns);
+            var durationMs = (int)stopwatch.ElapsedMilliseconds;
+
+            var result = _validator.Validate(response.Text, columns);
+
+            await _aiCallLogStore.AddAsync(
+                new AiCallLog
+                {
+                    Id = Guid.NewGuid(),
+                    DashboardId = dashboardId,
+                    Attempt = i + 1,
+                    Model = response.Model,
+                    InputTokens = response.InputTokens,
+                    OutputTokens = response.OutputTokens,
+                    DurationMs = durationMs,
+                    IsValid = result.IsValid,
+                    CreatedAt = DateTimeOffset.UtcNow,
+                }
+            );
+
             if (result.IsValid)
             {
                 result.Spec!.Data = parsed.Rows;

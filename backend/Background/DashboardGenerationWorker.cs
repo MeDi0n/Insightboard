@@ -47,7 +47,7 @@ public class DashboardGenerationWorker : BackgroundService
 
             try
             {
-                var spec = await _dashboardService.GenerateAsync(job.Table);
+                var spec = await _dashboardService.GenerateAsync(job.DashboardId, job.Table);
 
                 if (spec == null)
                 {

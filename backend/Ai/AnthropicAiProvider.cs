@@ -12,7 +12,7 @@ public class AnthropicAiProvider : IAiProvider
         _client = new AnthropicClient { ApiKey = config["Anthropic:ApiKey"]!.Trim() };
     }
 
-    public async Task<string> SendMessageAsync(string prompt)
+    public async Task<AiResponse> SendMessageAsync(string prompt)
     {
         var message = await _client.Messages.Create(
             new MessageCreateParams
@@ -23,6 +23,12 @@ public class AnthropicAiProvider : IAiProvider
             }
         );
         var text = message.Content.Select(b => b.Value).OfType<TextBlock>().First().Text;
-        return text;
+        return new AiResponse
+        {
+            Text = text,
+            Model = message.Model,
+            InputTokens = (int)message.Usage.InputTokens,
+            OutputTokens = (int)message.Usage.OutputTokens,
+        };
     }
 }

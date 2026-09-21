@@ -2,12 +2,18 @@ namespace Insightboard.Api.Ai;
 
 public class FakeAiProvider : IAiProvider
 {
-    public Task<string> SendMessageAsync(string prompt)
+    public Task<AiResponse> SendMessageAsync(string prompt)
     {
         return Task.FromResult(
-            """
-            {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
-            """
+            new AiResponse
+            {
+                Text = """
+                {"charts":[{"type":"bar","title":"sales","x":"month","y":"sales"}]}
+                """,
+                Model = "fake",
+                InputTokens = 0,
+                OutputTokens = 0,
+            }
         );
     }
 }
