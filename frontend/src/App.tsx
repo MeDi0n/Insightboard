@@ -5,6 +5,7 @@ import { useGetDashboardList } from "./hooks/useGetDashboardList";
 import useTheme from "./hooks/useTheme";
 import DashboardPage from "./pages/DashboardPage";
 import UploadPage from "./pages/UploadPage";
+import UsagePage from "./pages/UsagePage";
 
 function App() {
   const [colorTheme, setColorTheme] = useTheme();
@@ -22,6 +23,7 @@ function App() {
             <Routes>
               <Route path="/" element={<UploadPage />} />
               <Route path="/dashboard/:id" element={<DashboardPage />} />
+              <Route path="/usage" element={<UsagePage />} />
             </Routes>
           </main>
         </div>

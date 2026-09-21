@@ -1,5 +1,6 @@
 import { ChartNoAxesColumnIncreasing, Moon, Sun } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
+import { Link, NavLink } from "react-router-dom";
 import type { Colors } from "../../hooks/useTheme";
 import "./Header.css";
 
@@ -16,13 +17,18 @@ const Header = ({ colorTheme, setColorTheme }: Props) => {
   return (
     <header className="header">
       <div className="page-width">
-        <div className="logo">
+        <Link to="/" className="logo">
           <ChartNoAxesColumnIncreasing />
           Insightboard
+        </Link>
+        <div className="header-actions">
+          <NavLink to="/usage" className="header-link">
+            Usage
+          </NavLink>
+          <button className="switch-button" onClick={toggleTheme}>
+            {colorTheme === "light" ? <Moon /> : <Sun />}
+          </button>
         </div>
-        <button className="switch-button" onClick={toggleTheme}>
-          {colorTheme === "light" ? <Moon /> : <Sun />}
-        </button>
       </div>
     </header>
   );
